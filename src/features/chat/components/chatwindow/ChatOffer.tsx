@@ -5,7 +5,7 @@ import {
   NavigateFunction,
   useNavigate,
 } from "react-router-dom";
-import { IOffer } from "src/features/enrolment/interfaces/enrolment.interface";
+import { IEnrolment } from "src/features/enrolment/interfaces/enrolment.interface";
 import Button from "src/shared/Button/Button";
 import { showErrorToast } from "src/shared/utils/utils";
 
@@ -19,16 +19,16 @@ const ChatOffer: FC<IChatMessageProps> = ({
 }): ReactElement => {
   const navigate: NavigateFunction = useNavigate();
   const [updateOffer] = useUpdateOfferMutation();
-  const messageOffer: IOffer = message.offer as IOffer;
+  const messageOffer: IEnrolment = message.offer as IEnrolment;
 
-  const updateBuyerOffer = async (
+  const updateStudentOffer = async (
     messageId: string,
     type: string,
-    offer: IOffer
+    offer: IEnrolment,
   ): Promise<void> => {
     try {
       await updateOffer({ messageId, type });
-      const offerParams: IOffer = {
+      const offerParams: IEnrolment = {
         courseTitle: offer.courseTitle,
         description: offer.description,
         price: offer.price,
@@ -43,11 +43,11 @@ const ChatOffer: FC<IChatMessageProps> = ({
           `/course/checkout/${message.courseId}?${createSearchParams({
             offer: JSON.stringify(offerParams),
           })}`,
-          { state: course }
+          { state: course },
         );
       }
     } catch (error) {
-      showErrorToast("Error updating buyer offer.");
+      showErrorToast("Error updating student offer.");
     }
   };
 
@@ -76,7 +76,7 @@ const ChatOffer: FC<IChatMessageProps> = ({
             disabled={messageOffer.accepted || messageOffer.cancelled}
             label="Cancel Offer"
             onClick={() =>
-              updateBuyerOffer(`${message._id}`, "cancelled", messageOffer)
+              updateStudentOffer(`${message._id}`, "cancelled", messageOffer)
             }
           />
 
@@ -90,7 +90,7 @@ const ChatOffer: FC<IChatMessageProps> = ({
               disabled={messageOffer.accepted || messageOffer.cancelled}
               label="Accept Offer"
               onClick={() =>
-                updateBuyerOffer(`${message._id}`, "accepted", messageOffer)
+                updateStudentOffer(`${message._id}`, "accepted", messageOffer)
               }
             />
           )}

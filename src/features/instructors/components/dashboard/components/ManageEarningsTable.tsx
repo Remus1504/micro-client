@@ -1,18 +1,18 @@
 import { FC, ReactElement } from "react";
 import { Link } from "react-router-dom";
 import {
-  IOrderDocument,
-  IOrderTableProps,
+  IEnrolmentDocument,
+  IEnrolmentTableProps,
 } from "src/features/enrolment/interfaces/enrolment.interface";
 import { updateHeader } from "src/shared/header/reducers/header.reducer";
 import { TimeAgo } from "src/shared/utils/time.utils";
 import { useAppDispatch } from "src/store/store";
 import { v4 as uuidv4 } from "uuid";
 
-const ManageEarningsTable: FC<IOrderTableProps> = ({
+const ManageEarningsTable: FC<IEnrolmentTableProps> = ({
   type,
-  orders,
-  orderTypes,
+  enrolments,
+  enrolmentTypes,
 }): ReactElement => {
   const dispatch = useAppDispatch();
 
@@ -24,10 +24,10 @@ const ManageEarningsTable: FC<IOrderTableProps> = ({
         </div>
       </div>
       <table className="border border-grey w-full table-auto flex flex-row flex-no-wrap text-sm text-gray-500 overflow-hidden sm:inline-table">
-        {orderTypes > 0 ? (
+        {enrolmentTypes > 0 ? (
           <>
             <thead className="border-grey border-b text-xs uppercase text-gray-700 sm:[&>*:not(:first-child)]:hidden">
-              {orders.map(() => (
+              {enrolments.map(() => (
                 <tr
                   key={uuidv4()}
                   className="bg-sky-500 text-white flex flex-col flex-nowrap sm:table-row md:table-row mb-1 sm:mb-0 lg:bg-transparent lg:text-black "
@@ -36,13 +36,13 @@ const ManageEarningsTable: FC<IOrderTableProps> = ({
                   <th className="p-3 text-left md:text-center">Activity</th>
                   <th className="p-3 text-left md:text-center">Description</th>
                   <th className="p-3 text-left md:text-center">From</th>
-                  <th className="p-3 text-left md:text-center">Order</th>
+                  <th className="p-3 text-left md:text-center">Enrolment</th>
                   <th className="p-3 text-left md:text-center">Amount</th>
                 </tr>
               ))}
             </thead>
             <tbody className="flex-1 sm:flex-none">
-              {orders.map((order: IOrderDocument) => (
+              {enrolments.map((order: IEnrolmentDocument) => (
                 <tr
                   key={uuidv4()}
                   className="bg-white border-b border-grey flex flex-col flex-nowrap sm:table-row mb-2 sm:mb-0 "
@@ -58,10 +58,10 @@ const ManageEarningsTable: FC<IOrderTableProps> = ({
                   <td className="p-3 text-left md:text-center">
                     <Link
                       onClick={() => dispatch(updateHeader("home"))}
-                      to={`/orders/${order.orderId}/activities`}
+                      to={`/enrolments/${order.enrolmentId}/activities`}
                       className="underline"
                     >
-                      {order.orderId}
+                      {order.enrolmentId}
                     </Link>
                   </td>
                   <td className="px-3 text-left md:text-center text-sky-500 font-bold">
@@ -75,7 +75,7 @@ const ManageEarningsTable: FC<IOrderTableProps> = ({
           <tbody>
             <tr>
               <td className="w-full px-4 py-2 text-sm">
-                No {type} orders to show.
+                No {type} enrolments to show.
               </td>
             </tr>
           </tbody>

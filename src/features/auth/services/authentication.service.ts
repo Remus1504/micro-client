@@ -1,72 +1,72 @@
-import { IResponse } from "src/shared/shared.interface";
-import { api } from "../../../store/apis";
+import { IResponse } from 'src/shared/shared.interface';
+import { api } from '../../../store/apis';
 
 import {
   ISignInPayload,
   ISignUpPayload,
-} from "../interfaces/authenticationinterface";
+} from '../interfaces/authenticationinterface';
 
 export const authApi = api.injectEndpoints({
   endpoints: (build) => ({
     signUp: build.mutation<IResponse, ISignUpPayload>({
       query(body: ISignUpPayload) {
         return {
-          url: "/auth/signup",
-          method: "POST",
+          url: '/auth/signup',
+          method: 'POST',
           body,
         };
       },
-      invalidatesTags: ["Auth"],
+      invalidatesTags: ['Auth'],
     }),
     signIn: build.mutation<IResponse, ISignInPayload>({
       query(body: ISignInPayload) {
         return {
-          url: "/auth/signin",
-          method: "POST",
+          url: '/auth/signin',
+          method: 'POST',
           body,
         };
       },
-      invalidatesTags: ["Auth"],
+      invalidatesTags: ['Auth'],
     }),
     logout: build.mutation<IResponse, void>({
       query() {
         return {
-          url: "auth/signout",
-          method: "POST",
+          url: 'auth/signout',
+          method: 'POST',
           body: {},
         };
       },
-      invalidatesTags: ["Auth"],
+      invalidatesTags: ['Auth'],
     }),
     resendEmail: build.mutation<IResponse, { userId: number; email: string }>({
       query(data) {
         return {
-          url: "auth/resend-email",
-          method: "POST",
+          url: 'auth/resend-email',
+          method: 'POST',
           body: data,
         };
       },
-      invalidatesTags: ["Auth"],
+      invalidatesTags: ['Auth'],
     }),
     verifyEmail: build.mutation<IResponse, string>({
       query(token: string) {
         return {
-          url: "auth/verify-email",
-          method: "PUT",
+          url: 'auth/verify-email',
+          method: 'PUT',
           body: { token },
         };
       },
-      invalidatesTags: ["Auth"],
+      invalidatesTags: ['Auth'],
     }),
     forgotPassword: build.mutation<IResponse, string>({
       query(email: string) {
         return {
-          url: "auth/forgot-password",
-          method: "PUT",
+          url: 'auth/forgot-password',
+          method: 'PUT',
           body: { email },
         };
       },
-      invalidatesTags: ["Auth"],
+      invalidatesTags: ['Auth'],
     }),
     resetPassword: build.mutation<
       IResponse,
@@ -75,25 +75,25 @@ export const authApi = api.injectEndpoints({
       query(data) {
         return {
           url: `auth/reset-password/${data.token}`,
-          method: "PUT",
+          method: 'PUT',
           body: data,
         };
       },
-      invalidatesTags: ["Auth"],
+      invalidatesTags: ['Auth'],
     }),
     checkCurrentUser: build.query<IResponse, void>({
-      query: () => "auth/currentuser",
-      providesTags: ["Currentuser"],
+      query: () => 'auth/currentuser',
+      providesTags: ['Currentuser'],
     }),
     getLoggedInUser: build.query<IResponse, void>({
-      query: () => "auth/logged-in-user",
-      providesTags: ["Auth"],
+      query: () => 'auth/logged-in-user',
+      providesTags: ['Auth'],
     }),
     removeLoggedInUser: build.mutation<IResponse, string>({
       query(username: string) {
         return {
           url: `auth/logged-in-user/${username}`,
-          method: "DELETE",
+          method: 'DELETE',
         };
       },
     }),
@@ -103,11 +103,11 @@ export const authApi = api.injectEndpoints({
     >({
       query: ({ query, from, size, type }) =>
         `auth/search/course/${from}/${size}/${type}?${query}`,
-      providesTags: ["Auth"],
+      providesTags: ['Auth'],
     }),
     getAuthCourseById: build.query<IResponse, string>({
       query: (courseId: string) => `auth/search/course/${courseId}`,
-      providesTags: ["Auth"],
+      providesTags: ['Auth'],
     }),
   }),
 });

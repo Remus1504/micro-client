@@ -66,7 +66,7 @@ const AddCourse: FC = (): ReactElement => {
   });
   const reactQuillRef = useRef<ReactQuill | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
-  const [allowedCourseItemLength, setAllowedGigItemLength] =
+  const [allowedCourseItemLength, setAllowedCourseItemLength] =
     useState<IAllowedCourseItem>({
       courseTitle: "80/80",
       basicTitle: "40/40",
@@ -128,15 +128,16 @@ const AddCourse: FC = (): ReactElement => {
           basicDescription: courseInfo.basicDescription,
         };
         const response: IResponse = await createCourse(course).unwrap();
-        const updatedSeller: InstructorDocument = {
+        const updateInstructor: InstructorDocument = {
           ...instructor,
           totalCourses: (instructor.totalCourses as number) + 1,
         };
-        dispatch(addInstructor(updatedSeller));
+        dispatch(addInstructor(updateInstructor));
         const title: string = replaceSpacesWithDash(course.title);
         navigate(
-          `/course/${lowerCase(`${authUser.username}`)}/${title}/${response
-            ?.course?.instructorId}/${response?.course?.id}/view`
+          `/course/${lowerCase(`${authUser.username}`)}/${title}/${
+            response?.course?.instructorId
+          }/${response?.course?.id}/view`,
         );
       }
     } catch (error) {
@@ -147,8 +148,8 @@ const AddCourse: FC = (): ReactElement => {
   const onCancelCreate = (): void => {
     navigate(
       `/instructor_profile/${lowerCase(
-        `${authUser.username}/${instructorId}/edit`
-      )}`
+        `${authUser.username}/${instructorId}/edit`,
+      )}`,
     );
   };
 
@@ -164,7 +165,7 @@ const AddCourse: FC = (): ReactElement => {
         />
       )}
       <div className="relative w-screen">
-        <Breadcrumb breadCrumbItems={["Seller", "Create new course"]} />
+        <Breadcrumb breadCrumbItems={["Instructor", "Create new course"]} />
         <div className="container relative mx-auto my-5 px-2 pb-12 md:px-0">
           {isLoading && <CircularPageLoader />}
           {authUser && !authUser.emailVerified && (
@@ -176,7 +177,7 @@ const AddCourse: FC = (): ReactElement => {
           <div className="border-grey left-0 top-0 z-10 mt-4 block rounded border bg-white p-6">
             <div className="mb-6 grid md:grid-cols-5">
               <div className="pb-2 text-base font-medium">
-                Gig title
+                Course title
                 <sup className="top-[-0.3em] text-base text-red-500">*</sup>
               </div>
               <div className="col-span-4 md:w-11/12 lg:w-8/12">
@@ -194,7 +195,7 @@ const AddCourse: FC = (): ReactElement => {
                     setCourseInfo({ ...courseInfo, title: courseTitleValue });
                     const counter: number =
                       COURSE_MAX_LENGTH.courseTitle - courseTitleValue.length;
-                    setAllowedGigItemLength({
+                    setAllowedCourseItemLength({
                       ...allowedCourseItemLength,
                       courseTitle: `${counter}/80`,
                     });
@@ -228,7 +229,7 @@ const AddCourse: FC = (): ReactElement => {
                     });
                     const counter: number =
                       COURSE_MAX_LENGTH.basicTitle - basicTitleValue.length;
-                    setAllowedGigItemLength({
+                    setAllowedCourseItemLength({
                       ...allowedCourseItemLength,
                       basicTitle: `${counter}/40`,
                     });
@@ -263,7 +264,7 @@ const AddCourse: FC = (): ReactElement => {
                     const counter: number =
                       COURSE_MAX_LENGTH.basicDescription -
                       basicDescriptionValue.length;
-                    setAllowedGigItemLength({
+                    setAllowedCourseItemLength({
                       ...allowedCourseItemLength,
                       basicDescription: `${counter}/100`,
                     });
@@ -296,7 +297,7 @@ const AddCourse: FC = (): ReactElement => {
                       ) {
                         reactQuillEditor.deleteText(
                           COURSE_MAX_LENGTH.fullDescription,
-                          reactQuillEditor.getLength()
+                          reactQuillEditor.getLength(),
                         );
                       }
                     });
@@ -305,13 +306,13 @@ const AddCourse: FC = (): ReactElement => {
                     event: string,
                     _,
                     __,
-                    editor: UnprivilegedEditor
+                    editor: UnprivilegedEditor,
                   ) => {
                     setCourseInfo({ ...courseInfo, description: event });
                     const counter: number =
                       COURSE_MAX_LENGTH.fullDescription -
                       editor.getText().length;
-                    setAllowedGigItemLength({
+                    setAllowedCourseItemLength({
                       ...allowedCourseItemLength,
                       descriptionCharacters: `${counter}/1200`,
                     });
@@ -463,7 +464,7 @@ const AddCourse: FC = (): ReactElement => {
                 <Button
                   disabled={isLoading}
                   className="rounded bg-sky-500 px-8 py-3 text-center text-sm font-bold text-white hover:bg-sky-400 focus:outline-none md:py-3 md:text-base"
-                  label="Create Gig"
+                  label="Create Course"
                   onClick={onCreateCourse}
                 />
                 <Button
@@ -473,11 +474,11 @@ const AddCourse: FC = (): ReactElement => {
                   onClick={() => {
                     const isEqual: boolean = equal(
                       courseInfo,
-                      courseInfoRef.current
+                      courseInfoRef.current,
                     );
                     if (!isEqual) {
                       setApprovalModalContent({
-                        header: "Cancel Gig Creation",
+                        header: "Cancel Course Creation",
                         body: "Are you sure you want to cancel?",
                         btnText: "Yes, Cancel",
                         btnColor: "bg-red-500 hover:bg-red-400",

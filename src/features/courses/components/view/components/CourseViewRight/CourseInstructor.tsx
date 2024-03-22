@@ -26,7 +26,7 @@ const CourseInstructor: FC = (): ReactElement => {
     useState<IApprovalModalContent>();
   const [showModal, setShowModal] = useState<boolean>(false);
   const [showChatBox, setShowChatBox] = useState<boolean>(false);
-  const chatSeller: IChatInstructorProps = {
+  const chatInstructor: IChatInstructorProps = {
     username: `${instructor.username}`,
     _id: `${instructor._id}`,
     profilePicture: `${instructor.profilePicture}`,
@@ -83,7 +83,7 @@ const CourseInstructor: FC = (): ReactElement => {
                       <StarRating
                         value={rating(
                           parseInt(`${course.ratingSum}`) /
-                            parseInt(`${course.ratingsCount}`)
+                            parseInt(`${course.ratingsCount}`),
                         )}
                         size={14}
                       />
@@ -129,7 +129,7 @@ const CourseInstructor: FC = (): ReactElement => {
                         }`}
                         &nbsp;
                       </span>
-                    )
+                    ),
                   )}
               </div>
             </div>
@@ -169,7 +169,7 @@ const CourseInstructor: FC = (): ReactElement => {
         </div>
         {showChatBox && (
           <ChatBox
-            instructor={chatSeller}
+            instructor={chatInstructor}
             student={chatStudent}
             courseId={`${course.id}`}
             onClose={() => setShowChatBox(false)}

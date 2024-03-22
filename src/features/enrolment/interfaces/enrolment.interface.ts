@@ -1,26 +1,26 @@
-import { IAuthUser } from "src/features/auth/interfaces/authenticationinterface";
+import { IAuthUser } from 'src/features/auth/interfaces/authenticationinterface';
 
 export type DivElementRefType = HTMLDivElement;
 
 export interface ICheckoutProps {
   courseId: string;
-  offer: IOffer;
+  offer: IEnrolment;
 }
 
-export interface IOrderProps {
-  order: IOrderDocument;
+export interface IEnrolmentProps {
+  enrolment: IEnrolmentDocument;
   authUser: IAuthUser;
 }
 
-export interface IOrderActivitiesProps {
-  order: IOrderDocument;
+export interface IEnrolmentActivitiesProps {
+  enrolment: IEnrolmentDocument;
   authUser: IAuthUser;
   viewDeliveryBtnClicked?: boolean;
   showDeliveryPanel?: boolean;
   showReviewPanel?: boolean;
 }
 
-export interface IOffer {
+export interface IEnrolment {
   [key: string]: string | number | boolean | undefined;
   courseTitle: string;
   price: number;
@@ -33,64 +33,64 @@ export interface IOffer {
   reason?: string; // this is the reason for extending the delivery date
 }
 
-export interface IOrderDeliveredProps {
+export interface IEnrolmentDeliveredProps {
   ref?: HTMLDivElement;
 }
 
-export interface IOrderInvoice {
+export interface IEnrolmentInvoice {
   invoiceId: string;
-  orderId: string;
+  enrolmentId: string;
   date: string;
   studentUsername: string;
-  orderService: IOrderInvoiceService[];
+  enrolmentService: IEnrolmentInvoiceService[];
 }
 
-export interface IOrderInvoiceService {
+export interface IEnrolmentInvoiceService {
   service: string;
   quantity: number;
   price: number;
 }
 
-export interface IOrderContext {
-  order?: IOrderDocument;
+export interface IEnrolmentContext {
+  enrolment?: IEnrolmentDocument;
   authUser?: IAuthUser;
-  orderInvoice?: IOrderInvoice;
+  enrolmentInvoice?: IEnrolmentInvoice;
   viewDeliveryBtnClicked?: boolean;
 }
 
 export interface IExtendedDateModalProps {
-  order: IOrderDocument;
+  enrolment: IEnrolmentDocument;
   onClose: () => void;
 }
 
-export interface IOrderTableProps {
+export interface IEnrolmentTableProps {
   type: string;
-  orders: IOrderDocument[];
-  orderTypes: number;
+  enrolments: IEnrolmentDocument[];
+  enrolmentTypes: number;
 }
 
 export interface IActiveOrderProps {
-  activeOrders: IOrderDocument[];
+  activeEnrolments: IEnrolmentDocument[];
 }
 
-export interface IOrderDisplayModal {
+export interface IEnrolmentDisplayModal {
   deliverWork: boolean;
-  extendDelivery: boolean;
+  extendStartDate: boolean;
 }
 
-export interface IOrderDeliveredModal {
+export interface IEnrolmentDeliveredModal {
   enrolment: boolean;
   enrolmentApproval: boolean;
 }
 
-export interface IOrderReviewModal {
+export interface IEnrolmentReviewModal {
   studentReview: boolean;
   instructorReview: boolean;
   studentPanel: boolean;
   instructorPanel: boolean;
 }
 
-export interface IExtendedDelivery {
+export interface IExtendedEnrolment {
   originalDate: string;
   newDate: string;
   days: number;
@@ -106,24 +106,24 @@ export interface IDeliveredWork {
   fileName: string;
 }
 
-export interface IOrderEvents {
+export interface IEnrolmentEvents {
   placeOrder: string;
   requirements: string;
-  orderStarted: string;
-  deliveryDateUpdate?: string;
+  enrolmentStarted: string;
+  startDateUpdate?: string;
   sucessfulEnrolment?: string;
   studentReview?: string;
   instructorReview?: string;
 }
 
-export interface IOrderReview {
+export interface ICourseReview {
   rating: number;
   review: string;
   date?: string;
 }
 
-export interface IOrderDocument {
-  offer: IOffer;
+export interface IEnrolmentDocument {
+  offer: IEnrolment;
   courseId: string;
   instructorId: string;
   instructorUsername: string;
@@ -138,11 +138,11 @@ export interface IOrderDocument {
   studentEmail: string;
   studentImage: string;
   status: string;
-  orderId: string;
+  enrolmentId: string;
   invoiceId: string;
   quantity: number;
   price: number;
-  requestExtension?: IExtendedDelivery;
+  requestExtension?: IExtendedEnrolment;
   serviceFee?: number;
   requirements?: string;
   approved?: boolean;
@@ -151,17 +151,17 @@ export interface IOrderDocument {
   approvedAt?: string;
   deliveredWork?: IDeliveredWork[];
   dateEnrolled?: string;
-  events: IOrderEvents;
-  studentReview?: IOrderReview;
-  instructorReview?: IOrderReview;
+  events: IEnrolmentEvents;
+  studentReview?: ICourseReview;
+  instructorReview?: ICourseReview;
   paymentIntent?: string;
 }
 
-export interface IOrderMessage {
+export interface IEnrolmentMessage {
   instructorId?: string;
   studentId?: string;
-  ongoingJobs?: number;
-  completedJobs?: number;
+  onGoingTasks?: number;
+  completedTasks?: number;
   totalEarnings?: number;
   enrolledCourses?: string;
   recentDelivery?: string;
@@ -177,11 +177,11 @@ export interface IOrderMessage {
   title?: string;
   description?: string;
   startDate?: string;
-  orderId?: string;
+  enrolmentId?: string;
   invoiceId?: string;
-  orderDue?: string;
+  enrolmentDue?: string;
   requirements?: string;
-  orderUrl?: string;
+  enrolmentUrl?: string;
   originalDate?: string;
   newDate?: string;
   reason?: string;
@@ -192,7 +192,7 @@ export interface IOrderMessage {
   serviceFee?: string;
 }
 
-export interface IOrderNotifcation {
+export interface IEnrolmentNotifcation {
   _id?: string;
   userTo: string;
   senderUsername: string;
@@ -200,7 +200,7 @@ export interface IOrderNotifcation {
   receiverUsername: string;
   receiverPicture: string;
   isRead?: boolean;
-  orderId: string;
+  enrolmentId: string;
   type?: string;
   message: string;
   rating?: number;

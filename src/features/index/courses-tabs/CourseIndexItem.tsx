@@ -58,7 +58,7 @@ const CourseIndexItem: FC<ICoursesProps> = ({ course }): ReactElement => {
             (
             {rating(
               parseInt(`${courseData.ratingSum}`) /
-                parseInt(`${courseData.ratingsCount}`)
+                parseInt(`${courseData.ratingsCount}`),
             )}
             )
           </strong>

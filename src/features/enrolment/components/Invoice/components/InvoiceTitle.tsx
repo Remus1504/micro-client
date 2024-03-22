@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from "@react-pdf/renderer";
 import { FC, ReactElement, useContext } from "react";
-import { OrderContext } from "src/features/enrolment/context/OrderContext";
+import { EnrolmentContext } from "src/features/enrolment/context/EnrolmentContext";
 
 const styles = StyleSheet.create({
   container: {
@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
 });
 
 const InvoiceTitle: FC = (): ReactElement => {
-  const { orderInvoice } = useContext(OrderContext);
+  const { enrolmentInvoice } = useContext(EnrolmentContext);
 
   return (
     <View style={styles.container}>
@@ -29,8 +29,8 @@ const InvoiceTitle: FC = (): ReactElement => {
         <Text style={styles.reportTitle}>Jobber</Text>
         <Text style={styles.reportTitle}>
           Invoice{" "}
-          {orderInvoice && Object.keys(orderInvoice).length
-            ? orderInvoice?.invoiceId
+          {enrolmentInvoice && Object.keys(enrolmentInvoice).length
+            ? enrolmentInvoice?.invoiceId
             : ""}
         </Text>
       </View>

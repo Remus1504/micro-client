@@ -1,18 +1,28 @@
-import { Transition } from '@headlessui/react';
-import { FC, MouseEvent, ReactElement, useState } from 'react';
-import { FaAngleDown, FaAngleRight, FaAngleUp } from 'react-icons/fa';
-import { Link, NavigateFunction, useNavigate } from 'react-router-dom';
-import { applicationLogout, categories, lowerCase, replaceSpacesWithDash } from 'src/shared/utils/utils';
-import { socket } from 'src/sockets/socket.service';
-import { useAppDispatch, useAppSelector } from 'src/store/store';
-import { IReduxState } from 'src/store/store.interface';
-import { v4 as uuidv4 } from 'uuid';
+import { Transition } from "@headlessui/react";
+import { FC, MouseEvent, ReactElement, useState } from "react";
+import { FaAngleDown, FaAngleRight, FaAngleUp } from "react-icons/fa";
+import { Link, NavigateFunction, useNavigate } from "react-router-dom";
+import {
+  applicationLogout,
+  categories,
+  lowerCase,
+  replaceSpacesWithDash,
+} from "src/shared/utils/utils";
+import { socket } from "src/sockets/socket.service";
+import { useAppDispatch, useAppSelector } from "src/store/store";
+import { IReduxState } from "src/store/store.interface";
+import { v4 as uuidv4 } from "uuid";
 
-import { IHeaderSideBarProps, ISettings } from '../../interfaces/header.interface';
-import { updateCategoryContainer } from '../../reducers/category.reducer';
-import { updateHeader } from '../../reducers/header.reducer';
+import {
+  IHeaderSideBarProps,
+  ISettings,
+} from "../../interfaces/header.interface";
+import { updateCategoryContainer } from "../../reducers/category.reducer";
+import { updateHeader } from "../../reducers/header.reducer";
 
-const HomeHeaderSideBar: FC<IHeaderSideBarProps> = ({ setOpenSidebar }): ReactElement => {
+const HomeHeaderSideBar: FC<IHeaderSideBarProps> = ({
+  setOpenSidebar,
+}): ReactElement => {
   const authUser = useAppSelector((state: IReduxState) => state.authUser);
   const instructor = useAppSelector((state: IReduxState) => state.instructor);
   const student = useAppSelector((state: IReduxState) => state.student);
@@ -22,10 +32,30 @@ const HomeHeaderSideBar: FC<IHeaderSideBarProps> = ({ setOpenSidebar }): ReactEl
   const navigate: NavigateFunction = useNavigate();
   const isInstructor: boolean = (student && student.isInstructor) as boolean;
   const settings: ISettings[] = [
-    { id: 1, name: 'Add a new course', url: `/manage_courses/new/${instructor?._id}`, show: isInstructor },
-    { id: 2, name: 'Dashboard', url: `/users/${student?.username}/${student?._id}/orders`, show: true },
-    { id: 3, name: 'Profile', url: `/seller_profile/${lowerCase(`${instructor?.username}`)}/${instructor?._id}/edit`, show: isInstructor },
-    { id: 4, name: 'Settings', url: `/${lowerCase(`${instructor?.username}`)}/edit`, show: true }
+    {
+      id: 1,
+      name: "Add a new course",
+      url: `/manage_courses/new/${instructor?._id}`,
+      show: isInstructor,
+    },
+    {
+      id: 2,
+      name: "Dashboard",
+      url: `/users/${student?.username}/${student?._id}/orders`,
+      show: true,
+    },
+    {
+      id: 3,
+      name: "Profile",
+      url: `/instructor_profile/${lowerCase(`${instructor?.username}`)}/${instructor?._id}/edit`,
+      show: isInstructor,
+    },
+    {
+      id: 4,
+      name: "Settings",
+      url: `/${lowerCase(`${instructor?.username}`)}/edit`,
+      show: true,
+    },
   ];
 
   const toggleDropdown = (event: MouseEvent): void => {
@@ -44,24 +74,36 @@ const HomeHeaderSideBar: FC<IHeaderSideBarProps> = ({ setOpenSidebar }): ReactEl
 
   return (
     <div
-      className={'fixed left-0 top-0 z-[150] flex h-screen w-full bg-black/40 transition-all duration-500'}
+      className={
+        "fixed left-0 top-0 z-[150] flex h-screen w-full bg-black/40 transition-all duration-500"
+      }
       onClick={() => {
         if (setOpenSidebar) {
           setOpenSidebar(false);
         }
       }}
     >
-      <div className={'absolute left-0 top-0 z-20 flex h-screen w-[250px] flex-col items-start justify-start gap-4 bg-white p-6'}>
+      <div
+        className={
+          "absolute left-0 top-0 z-20 flex h-screen w-[250px] flex-col items-start justify-start gap-4 bg-white p-6"
+        }
+      >
         <div className="z-2 sticky top-0 flex w-full flex-col items-start justify-start gap-6 bg-white">
           <div className="flex cursor-pointer gap-4 py-3 text-base font-semibold transition-all duration-300">
-            <img src={`${authUser?.profilePicture}`} alt="profile" className="h-10 w-10 rounded-full object-cover" />
-            <span className="text-blacks flex self-center">{authUser?.username}</span>
+            <img
+              src={`${authUser?.profilePicture}`}
+              alt="profile"
+              className="h-10 w-10 rounded-full object-cover"
+            />
+            <span className="text-blacks flex self-center">
+              {authUser?.username}
+            </span>
           </div>
           <div
             onClick={() => {
               if (setOpenSidebar) {
                 setOpenSidebar(false);
-                dispatch(updateHeader('home'));
+                dispatch(updateHeader("home"));
                 dispatch(updateCategoryContainer(true));
               }
             }}
@@ -89,7 +131,11 @@ const HomeHeaderSideBar: FC<IHeaderSideBarProps> = ({ setOpenSidebar }): ReactEl
             }}
             className="cursor-pointer text-base font-medium text-gray-400"
           >
-            <Link to={`/users/${lowerCase(`${student?.username}`)}/${student?._id}/orders`}>Orders</Link>
+            <Link
+              to={`/users/${lowerCase(`${student?.username}`)}/${student?._id}/orders`}
+            >
+              Orders
+            </Link>
           </div>
           {!isInstructor && (
             <div
@@ -97,13 +143,13 @@ const HomeHeaderSideBar: FC<IHeaderSideBarProps> = ({ setOpenSidebar }): ReactEl
                 event.stopPropagation();
                 if (setOpenSidebar) {
                   setOpenSidebar(false);
-                  dispatch(updateHeader('home'));
+                  dispatch(updateHeader("home"));
                   dispatch(updateCategoryContainer(true));
                 }
               }}
               className="cursor-pointer text-base font-medium text-gray-400"
             >
-              <Link to="/seller_onboarding">Become a Seller</Link>
+              <Link to="/instructor_onboarding">Become a Instructor</Link>
             </div>
           )}
           {isInstructor && (
@@ -112,21 +158,30 @@ const HomeHeaderSideBar: FC<IHeaderSideBarProps> = ({ setOpenSidebar }): ReactEl
                 event.stopPropagation();
                 if (setOpenSidebar) {
                   setOpenSidebar(false);
-                  dispatch(updateHeader('sellerDashboard'));
+                  dispatch(updateHeader("instructorDashboard"));
                   dispatch(updateCategoryContainer(true));
                 }
               }}
               className="cursor-pointer text-base font-medium text-gray-400"
             >
-              <Link to={`/${lowerCase(`${authUser?.username}`)}/${instructor?._id}/seller_dashboard`}>
-                <span>Switch to Selling</span>
+              <Link
+                to={`/${lowerCase(`${authUser?.username}`)}/${instructor?._id}/instructor_dashboard`}
+              >
+                <span>Switch to Instructing</span>
               </Link>
             </div>
           )}
           <div className="flex w-full cursor-pointer flex-col text-base font-medium text-gray-400">
-            <span className="flex justify-between" onClick={toggleCategoriesDropdown}>
-              Browse Categories{' '}
-              {!toggleCategories ? <FaAngleDown className="mt-1 flex self-center" /> : <FaAngleUp className="mt-1 flex self-center" />}
+            <span
+              className="flex justify-between"
+              onClick={toggleCategoriesDropdown}
+            >
+              Browse Categories{" "}
+              {!toggleCategories ? (
+                <FaAngleDown className="mt-1 flex self-center" />
+              ) : (
+                <FaAngleUp className="mt-1 flex self-center" />
+              )}
             </span>
             <div className="">
               <Transition
@@ -146,7 +201,7 @@ const HomeHeaderSideBar: FC<IHeaderSideBarProps> = ({ setOpenSidebar }): ReactEl
                       onClick={() => {
                         if (setOpenSidebar) {
                           setOpenSidebar(false);
-                          dispatch(updateHeader('home'));
+                          dispatch(updateHeader("home"));
                           dispatch(updateCategoryContainer(true));
                         }
                       }}
@@ -155,12 +210,12 @@ const HomeHeaderSideBar: FC<IHeaderSideBarProps> = ({ setOpenSidebar }): ReactEl
                         <Link
                           to={`/categories/${replaceSpacesWithDash(category)}`}
                           onClick={() => {
-                            socket.emit('getLoggedInUsers', '');
+                            socket.emit("getLoggedInUsers", "");
                           }}
                         >
                           {category}
                         </Link>
-                      </span>{' '}
+                      </span>{" "}
                       <FaAngleRight className="flex self-center" />
                     </li>
                   ))}
@@ -170,8 +225,12 @@ const HomeHeaderSideBar: FC<IHeaderSideBarProps> = ({ setOpenSidebar }): ReactEl
           </div>
           <div className="flex w-full cursor-pointer flex-col text-base font-medium text-gray-400">
             <span className="flex justify-between" onClick={toggleDropdown}>
-              Your Settings{' '}
-              {!isDropdownOpen ? <FaAngleDown className="mt-1 flex self-center" /> : <FaAngleUp className="mt-1 flex self-center" />}
+              Your Settings{" "}
+              {!isDropdownOpen ? (
+                <FaAngleDown className="mt-1 flex self-center" />
+              ) : (
+                <FaAngleUp className="mt-1 flex self-center" />
+              )}
             </span>
             <div className="">
               <Transition
@@ -192,10 +251,15 @@ const HomeHeaderSideBar: FC<IHeaderSideBarProps> = ({ setOpenSidebar }): ReactEl
                             to={`${setting.url}`}
                             className="flex justify-between text-right"
                             onClick={() => {
-                              dispatch(updateCategoryContainer(setting.name !== 'Settings'));
+                              dispatch(
+                                updateCategoryContainer(
+                                  setting.name !== "Settings",
+                                ),
+                              );
                             }}
                           >
-                            <span className="w-full pr-6">{setting.name}</span> <FaAngleRight className="flex self-center" />
+                            <span className="w-full pr-6">{setting.name}</span>{" "}
+                            <FaAngleRight className="flex self-center" />
                           </Link>
                         </li>
                       )}

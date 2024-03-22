@@ -65,7 +65,7 @@ const OfferModal: FC<IModalProps> = ({
         cancelBtnHandler();
       }
     } catch (error) {
-      showErrorToast("Error sending gig offer.");
+      showErrorToast("Error sending course offer.");
     }
   };
 

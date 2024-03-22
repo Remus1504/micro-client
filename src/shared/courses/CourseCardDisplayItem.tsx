@@ -35,7 +35,7 @@ const CourseCardDisplayItem: FC<ICourseCardItems> = ({
   const saveCourseTitle = (course: InstructorCourse): void => {
     if (authUser?.username) {
       const category: string = replaceAmpersandAndDashWithSpace(
-        course.categories
+        course.categories,
       );
       socket.emit("category", category, authUser.username);
     }
@@ -47,7 +47,7 @@ const CourseCardDisplayItem: FC<ICourseCardItems> = ({
     socket.on("online", (data: string[]) => {
       instructorUsername.current = find(
         data,
-        (name: string) => name === course.username
+        (name: string) => name === course.username,
       ) as string;
     });
   }, [authUser.username, course.username]);
@@ -86,7 +86,7 @@ const CourseCardDisplayItem: FC<ICourseCardItems> = ({
             <span className="text-md hover:underline">
               {linkTarget ? (
                 <Link
-                  to={`/seller_profile/${lowerCase(`${course.username}`)}/${
+                  to={`/instructor_profile/${lowerCase(`${course.username}`)}/${
                     course.instructorId
                   }/${
                     instructor.username === course.username ? "edit" : "view"
@@ -129,7 +129,7 @@ const CourseCardDisplayItem: FC<ICourseCardItems> = ({
             (
             {rating(
               parseInt(`${course.ratingSum}`) /
-                parseInt(`${course.ratingsCount}`)
+                parseInt(`${course.ratingsCount}`),
             )}
             )
           </strong>

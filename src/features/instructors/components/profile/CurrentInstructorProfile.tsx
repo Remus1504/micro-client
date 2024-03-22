@@ -21,7 +21,7 @@ import { addInstructor } from "../../reducers/instructor.reducer";
 import { useUpdateInstructorMutation } from "../../services/Instructor.service";
 import ProfileHeader from "./components/ProfileHeader";
 import ProfileTabs from "./components/ProfileTabs";
-import SellerOverview from "./components/InstructorOverview";
+import InstructorOverview from "./components/InstructorOverview";
 
 const CurrentInstructorProfile: FC = (): ReactElement => {
   const instructor = useAppSelector((state: IReduxState) => state.instructor);
@@ -59,6 +59,7 @@ const CurrentInstructorProfile: FC = (): ReactElement => {
         instructorId: `${instructorId}`,
         instructor: instructorProfile,
       }).unwrap();
+      console.log(instructorId);
       dispatch(addInstructor(response.instructor));
       setInstructorProfile(response.instructor as InstructorDocument);
       setShowEdit(false);
@@ -113,13 +114,13 @@ const CurrentInstructorProfile: FC = (): ReactElement => {
 
           <div className="flex flex-wrap bg-white">
             {type === "Overview" && (
-              <SellerOverview
+              <InstructorOverview
                 instructorProfile={instructorProfile}
                 setInstructorProfile={setInstructorProfile}
                 showEditIcons={true}
               />
             )}
-            {type === "Active Gigs" && (
+            {type === "Active Courses" && (
               <div className="grid gap-x-6 pt-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
                 {data?.courses &&
                   data?.courses.map((course: InstructorCourse) => (

@@ -44,7 +44,7 @@ const FeaturedExperts: FC<IFeaturedExpertProps> = ({
                     <StarRating
                       value={rating(
                         parseInt(`${instructor.ratingSum}`) /
-                          parseInt(`${instructor.ratingsCount}`)
+                          parseInt(`${instructor.ratingsCount}`),
                       )}
                       size={14}
                     />
@@ -54,7 +54,7 @@ const FeaturedExperts: FC<IFeaturedExpertProps> = ({
                       <span className="font-bold text-white">
                         {rating(
                           parseInt(`${instructor.ratingSum}`) /
-                            parseInt(`${instructor.ratingsCount}`)
+                            parseInt(`${instructor.ratingsCount}`),
                         )}
                       </span>
                     </div>
@@ -62,8 +62,8 @@ const FeaturedExperts: FC<IFeaturedExpertProps> = ({
                 </div>
                 <div className="mt-4 flex space-x-3 md:mt-6">
                   <Link
-                    to={`/seller_profile/${lowerCase(
-                      `${instructor.username}`
+                    to={`/instructor_profile/${lowerCase(
+                      `${instructor.username}`,
                     )}/${instructor._id}/view`}
                     className="rounded bg-sky-500 px-6 py-3 text-center text-sm font-bold text-white hover:bg-sky-400 focus:outline-none md:px-4 md:py-2 md:text-base"
                   >

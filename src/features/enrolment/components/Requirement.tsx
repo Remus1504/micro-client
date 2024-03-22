@@ -17,11 +17,11 @@ import {
 import { useAppSelector } from "src/store/store";
 import { IReduxState } from "src/store/store.interface";
 
-import { OrderContext } from "../context/OrderContext";
+import { EnrolmentContext } from "../context/EnrolmentContext";
 import {
-  IOffer,
-  IOrderDocument,
-  IOrderInvoice,
+  IEnrolment,
+  IEnrolmentDocument,
+  IEnrolmentInvoice,
 } from "../interfaces/enrolment.interface";
 import { useCreateEnrolmentMutation } from "../services/enrolment.service";
 import Invoice from "./Invoice/Invoice";
@@ -33,14 +33,14 @@ const Requirement: FC = (): ReactElement => {
   const [searchParams] = useSearchParams({});
   const courseRef = useRef<InstructorCourse>();
   const placeholder = "https://placehold.co/330x220?text=Placeholder";
-  const offer: IOffer = JSON.parse(`${searchParams.get("offer")}`);
+  const offer: IEnrolment = JSON.parse(`${searchParams.get("offer")}`);
   const order_date = `${searchParams.get("order_date")}`;
   const serviceFee: number =
     offer.price < 50
       ? (5.5 / 100) * offer.price + 2
       : (5.5 / 100) * offer.price;
   const navigate: NavigateFunction = useNavigate();
-  const orderId = `JO${generateRandomNumber(11)}`;
+  const enrolmentId = `JO${generateRandomNumber(11)}`;
   const invoiceId = `JI${generateRandomNumber(11)}`;
   const { data, isSuccess } = useGetCourseByIdQuery(`${courseId}`);
   const [createOrder] = useCreateEnrolmentMutation();
@@ -48,12 +48,12 @@ const Requirement: FC = (): ReactElement => {
   if (isSuccess) {
     courseRef.current = data.course;
   }
-  const orderInvoice: IOrderInvoice = {
+  const enrolmentInvoice: IEnrolmentInvoice = {
     invoiceId,
-    orderId,
+    enrolmentId,
     date: `${new Date()}`,
     studentUsername: `${student.username}`,
-    orderService: [
+    enrolmentService: [
       {
         service: `${courseRef?.current?.title}`,
         quantity: 1,
@@ -70,7 +70,7 @@ const Requirement: FC = (): ReactElement => {
   const startOrder = async (): Promise<void> => {
     try {
       const paymentIntentId = getDataFromLocalStorage("paymentIntentId");
-      const order: IOrderDocument = {
+      const order: IEnrolmentDocument = {
         offer: {
           courseTitle: offer.courseTitle,
           price: offer.price,
@@ -95,7 +95,7 @@ const Requirement: FC = (): ReactElement => {
         studentImage: `${student.profilePicture}`,
         studentEmail: `${student.email}`,
         status: "in progress",
-        orderId,
+        enrolmentId,
         invoiceId,
         quantity: 1,
         dateEnrolled: `${new Date()}`,
@@ -105,11 +105,13 @@ const Requirement: FC = (): ReactElement => {
         events: {
           placeOrder: order_date, // this should be the date after successful payment
           requirements: `${new Date()}`,
-          orderStarted: `${new Date()}`,
+          enrolmentStarted: `${new Date()}`,
         },
       };
       const response: IResponse = await createOrder(order).unwrap();
-      navigate(`/orders/${orderId}/activities`, { state: response?.order });
+      navigate(`/enrolments/${enrolmentId}/activities`, {
+        state: response?.enrolment,
+      });
       deleteFromLocalStorage("paymentIntent");
     } catch (error) {
       showErrorToast("Error starting your order.");
@@ -128,11 +130,11 @@ const Requirement: FC = (): ReactElement => {
               You can{" "}
               <PDFDownloadLink
                 document={
-                  <OrderContext.Provider value={{ orderInvoice }}>
+                  <EnrolmentContext.Provider value={{ enrolmentInvoice }}>
                     <Invoice />
-                  </OrderContext.Provider>
+                  </EnrolmentContext.Provider>
                 }
-                fileName={`${orderInvoice.invoiceId}.pdf`}
+                fileName={`${enrolmentInvoice.invoiceId}.pdf`}
               >
                 <div className="cursor-pointer text-blue-400 underline">
                   download your invoice
@@ -145,7 +147,9 @@ const Requirement: FC = (): ReactElement => {
               <span className="mb-3 text-base font-medium text-black md:text-lg lg:text-xl">
                 Any information you would like the instructor to know?
               </span>
-              <p className="text-sm">Click the button to start the order.</p>
+              <p className="text-sm">
+                Click the button to start the enrolment.
+              </p>
             </div>
             <div className="flex flex-col px-4 pb-4">
               <TextAreaInput
@@ -160,7 +164,7 @@ const Requirement: FC = (): ReactElement => {
               />
               <Button
                 className="mt-3 rounded bg-sky-500 px-6 py-3 text-center text-sm font-bold text-white hover:bg-sky-400 focus:outline-none md:px-4 md:py-2 md:text-base"
-                label="Start Order"
+                label="Start Enrolment"
                 onClick={startOrder}
               />
             </div>
@@ -173,7 +177,7 @@ const Requirement: FC = (): ReactElement => {
               <img
                 className="w-full object-cover"
                 src={courseRef.current?.coverImage ?? placeholder}
-                alt="Gig Cover Image"
+                alt="Course Cover Image"
               />
             </div>
             <ul className="mb-0 list-none">
@@ -187,11 +191,13 @@ const Requirement: FC = (): ReactElement => {
                 </span>
               </li>
               <li className="flex justify-between px-4 pb-2 pt-2">
-                <div className="flex gap-2 text-sm font-normal">Order</div>
-                <span className="text-sm">#{orderId}</span>
+                <div className="flex gap-2 text-sm font-normal">Enrolment</div>
+                <span className="text-sm">#{enrolmentId}</span>
               </li>
               <li className="flex justify-between px-4 pb-2 pt-2">
-                <div className="flex gap-2 text-sm font-normal">Order Date</div>
+                <div className="flex gap-2 text-sm font-normal">
+                  Enrolment Date
+                </div>
                 <span className="text-sm">
                   {TimeAgo.dayMonthYear(`${new Date()}`)}
                 </span>

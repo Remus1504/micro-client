@@ -1,27 +1,28 @@
 import { FC, ReactElement, useContext, useState } from "react";
 import { FaChevronDown, FaChevronUp, FaRegStar } from "react-icons/fa";
-import { OrderContext } from "src/features/enrolment/context/OrderContext";
-import { IOrderReviewModal } from "src/features/enrolment/interfaces/enrolment.interface";
+import { EnrolmentContext } from "src/features/enrolment/context/EnrolmentContext";
+import { IEnrolmentReviewModal } from "src/features/enrolment/interfaces/enrolment.interface";
 import Button from "src/shared/Button/Button";
 import ReviewModal from "src/shared/modals/ReviewModal";
 import StarRating from "src/shared/rating/rating";
 import { TimeAgo } from "src/shared/utils/time.utils";
 
-const OrderReview: FC = (): ReactElement => {
-  const { order, authUser } = useContext(OrderContext);
-  const [orderReviewModal, setOrderReviewModal] = useState<IOrderReviewModal>({
-    studentReview: false,
-    instructorReview: false,
-    studentPanel: false,
-    instructorPanel: false,
-  });
+const EnrolmentReview: FC = (): ReactElement => {
+  const { enrolment, authUser } = useContext(EnrolmentContext);
+  const [orderReviewModal, setOrderReviewModal] =
+    useState<IEnrolmentReviewModal>({
+      studentReview: false,
+      instructorReview: false,
+      studentPanel: false,
+      instructorPanel: false,
+    });
 
   return (
     <>
       {orderReviewModal.studentReview && (
         <ReviewModal
           type="student-review"
-          order={order}
+          enrolment={enrolment}
           onClose={() =>
             setOrderReviewModal({ ...orderReviewModal, studentReview: false })
           }
@@ -29,8 +30,8 @@ const OrderReview: FC = (): ReactElement => {
       )}
       {orderReviewModal.instructorReview && (
         <ReviewModal
-          type="seller-review"
-          order={order}
+          type="instructor-review"
+          enrolment={enrolment}
           onClose={() =>
             setOrderReviewModal({
               ...orderReviewModal,
@@ -39,9 +40,9 @@ const OrderReview: FC = (): ReactElement => {
           }
         />
       )}
-      {order?.approved &&
-        authUser?.username === order.studentUsername &&
-        order.studentReview?.rating === 0 && (
+      {enrolment?.approved &&
+        authUser?.username === enrolment.studentUsername &&
+        enrolment.studentReview?.rating === 0 && (
           <div className="flex rounded-[4px] bg-white px-4 py-3">
             <div className="w-full">
               <div className="flex gap-4">
@@ -52,7 +53,7 @@ const OrderReview: FC = (): ReactElement => {
                 </div>
                 <div className="w-full cursor-pointer pb-6">
                   <div className="mt-2 flex items-center justify-between font-medium text-gray-500">
-                    <span>Ready to review the seller?</span>
+                    <span>Ready to review the instructor?</span>
                   </div>
                   <div className="my-3 flex">
                     <Button
@@ -72,9 +73,9 @@ const OrderReview: FC = (): ReactElement => {
           </div>
         )}
 
-      {order?.approved &&
-        order?.studentReview &&
-        order?.studentReview?.rating > 0 && (
+      {enrolment?.approved &&
+        enrolment?.studentReview &&
+        enrolment?.studentReview?.rating > 0 && (
           <div className="flex rounded-[4px] bg-white px-4 py-3">
             <div className="w-full">
               <div className="flex gap-4">
@@ -86,19 +87,22 @@ const OrderReview: FC = (): ReactElement => {
                 <div className="border-grey w-full cursor-pointer border-b pb-6">
                   <div className="mt-2 flex items-center justify-between font-medium text-gray-500">
                     <div className="flex gap-2">
-                      {authUser?.username === order.studentUsername && (
+                      {authUser?.username === enrolment.studentUsername && (
                         <span>
-                          You left a {order.studentReview?.rating}-star review
+                          You left a {enrolment.studentReview?.rating}-star
+                          review
                         </span>
                       )}
-                      {authUser?.username === order.instructorUsername && (
+                      {authUser?.username === enrolment.instructorUsername && (
                         <span>
-                          {order.studentUsername} gave you a{" "}
-                          {order.studentReview?.rating}-star review
+                          {enrolment.studentUsername} gave you a{" "}
+                          {enrolment.studentReview?.rating}-star review
                         </span>
                       )}
                       <p className="flex self-center text-sm font-normal italic">
-                        {TimeAgo.dayWithTime(`${order?.events.studentReview}`)}
+                        {TimeAgo.dayWithTime(
+                          `${enrolment?.events.studentReview}`,
+                        )}
                       </p>
                     </div>
                     <div
@@ -122,35 +126,36 @@ const OrderReview: FC = (): ReactElement => {
                         <div className="border-grey w-full rounded border text-left text-sm text-gray-500">
                           <div className="border-grey border-b bg-[#fafafb] py-3 font-medium uppercase">
                             <span className="px-5">
-                              {authUser?.username === order.studentUsername
+                              {authUser?.username === enrolment.studentUsername
                                 ? "Your Review"
-                                : `${order.studentUsername}'s Review`}
+                                : `${enrolment.studentUsername}'s Review`}
                             </span>
                           </div>
                           <div className="flex w-full cursor-pointer flex-col items-center space-x-4 px-5 py-4 md:flex-row">
                             <div className="flex w-full justify-center md:w-12 md:self-start">
                               <img
                                 className="h-10 w-10 rounded-full object-cover"
-                                src={order.studentImage}
-                                alt="Buyer Image"
+                                src={enrolment.studentImage}
+                                alt="Student Image"
                               />
                             </div>
                             <div className="w-full text-sm dark:text-white">
                               <div className="flex justify-between text-sm font-bold text-[#777d74] md:text-base">
                                 <div className="flex flex-row gap-2">
-                                  {authUser?.username === order.studentUsername
+                                  {authUser?.username ===
+                                  enrolment.studentUsername
                                     ? "Me"
-                                    : order.studentUsername}
+                                    : enrolment.studentUsername}
                                   <div className="flex self-center">
                                     <div className="flex flex-row items-center gap-x-1">
                                       <StarRating
-                                        value={order.studentReview?.rating}
+                                        value={enrolment.studentReview?.rating}
                                         size={14}
                                       />
                                     </div>
                                     <div className="ml-1 flex gap-1 text-sm">
                                       <span className="text-orange-400">
-                                        ({order.studentReview?.rating})
+                                        ({enrolment.studentReview?.rating})
                                       </span>
                                     </div>
                                   </div>
@@ -158,7 +163,7 @@ const OrderReview: FC = (): ReactElement => {
                               </div>
                               <div className="mt-1 flex flex-col justify-between text-[#777d74]">
                                 <span className="text-sm md:text-[15px]">
-                                  {order.studentReview?.review}
+                                  {enrolment.studentReview?.review}
                                 </span>
                               </div>
                             </div>
@@ -173,11 +178,11 @@ const OrderReview: FC = (): ReactElement => {
           </div>
         )}
 
-      {order?.approved &&
-        authUser?.username === order.instructorUsername &&
-        order?.instructorReview?.rating === 0 &&
-        order?.studentReview &&
-        order?.studentReview?.rating > 0 && (
+      {enrolment?.approved &&
+        authUser?.username === enrolment.instructorUsername &&
+        enrolment?.instructorReview?.rating === 0 &&
+        enrolment?.studentReview &&
+        enrolment?.studentReview?.rating > 0 && (
           <div className="flex rounded-[4px] bg-white px-4 py-3">
             <div className="w-full">
               <div className="flex gap-4">
@@ -208,9 +213,9 @@ const OrderReview: FC = (): ReactElement => {
           </div>
         )}
 
-      {order?.approved &&
-        order?.instructorReview &&
-        order?.instructorReview?.rating > 0 && (
+      {enrolment?.approved &&
+        enrolment?.instructorReview &&
+        enrolment?.instructorReview?.rating > 0 && (
           <div className="flex rounded-[4px] bg-white px-4 py-3">
             <div className="w-full">
               <div className="flex gap-4">
@@ -222,21 +227,21 @@ const OrderReview: FC = (): ReactElement => {
                 <div className="w-full cursor-pointer pb-6">
                   <div className="mt-2 flex items-center justify-between font-medium text-gray-500">
                     <div className="flex gap-2">
-                      {authUser?.username === order.instructorUsername && (
+                      {authUser?.username === enrolment.instructorUsername && (
                         <span>
-                          You left {order.studentUsername} a{" "}
-                          {order.instructorReview?.rating}-star review
+                          You left {enrolment.studentUsername} a{" "}
+                          {enrolment.instructorReview?.rating}-star review
                         </span>
                       )}
-                      {authUser?.username === order.studentUsername && (
+                      {authUser?.username === enrolment.studentUsername && (
                         <span>
-                          {order.instructorUsername} gave you a{" "}
-                          {order.instructorReview?.rating}-star review
+                          {enrolment.instructorUsername} gave you a{" "}
+                          {enrolment.instructorReview?.rating}-star review
                         </span>
                       )}
                       <p className="flex self-center text-sm font-normal italic">
                         {TimeAgo.dayWithTime(
-                          `${order?.events.instructorReview}`
+                          `${enrolment?.events.instructorReview}`,
                         )}
                       </p>
                     </div>
@@ -261,36 +266,39 @@ const OrderReview: FC = (): ReactElement => {
                         <div className="border-grey w-full rounded border text-left text-sm text-gray-500">
                           <div className="border-grey border-b bg-[#fafafb] py-3 font-medium uppercase">
                             <span className="px-5">
-                              {authUser?.username === order.instructorUsername
+                              {authUser?.username ===
+                              enrolment.instructorUsername
                                 ? "Your Review"
-                                : `${order.studentUsername}'s Review`}
+                                : `${enrolment.studentUsername}'s Review`}
                             </span>
                           </div>
                           <div className="flex w-full cursor-pointer flex-col items-center space-x-4 px-5 py-4 md:flex-row">
                             <div className="flex w-full justify-center md:w-12 md:self-start">
                               <img
                                 className="h-10 w-10 rounded-full object-cover"
-                                src={order.instructorImage}
-                                alt="Buyer Image"
+                                src={enrolment.instructorImage}
+                                alt="Student Image"
                               />
                             </div>
                             <div className="w-full text-sm dark:text-white">
                               <div className="flex justify-between text-sm font-bold text-[#777d74] md:text-base">
                                 <div className="flex flex-row gap-2">
                                   {authUser?.username ===
-                                  order.instructorUsername
+                                  enrolment.instructorUsername
                                     ? "Me"
-                                    : order.instructorUsername}
+                                    : enrolment.instructorUsername}
                                   <div className="flex self-center">
                                     <div className="flex flex-row items-center gap-x-1">
                                       <StarRating
-                                        value={order.instructorReview.rating}
+                                        value={
+                                          enrolment.instructorReview.rating
+                                        }
                                         size={14}
                                       />
                                     </div>
                                     <div className="ml-1 flex gap-1 text-sm">
                                       <span className="text-orange-400">
-                                        ({order.instructorReview?.rating})
+                                        ({enrolment.instructorReview?.rating})
                                       </span>
                                     </div>
                                   </div>
@@ -298,7 +306,7 @@ const OrderReview: FC = (): ReactElement => {
                               </div>
                               <div className="mt-1 flex flex-col justify-between text-[#777d74]">
                                 <span className="text-sm md:text-[15px]">
-                                  {order.instructorReview?.review}
+                                  {enrolment.instructorReview?.review}
                                 </span>
                               </div>
                             </div>
@@ -316,4 +324,4 @@ const OrderReview: FC = (): ReactElement => {
   );
 };
 
-export default OrderReview;
+export default EnrolmentReview;

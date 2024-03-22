@@ -32,13 +32,13 @@ const CoursesIndexDisplay: FC<ICoursesProps> = ({ type }): ReactElement => {
   let courses: InstructorCourse[] = [];
   let totalCourses = 0;
   const updatedSearchParams: URLSearchParams = new URLSearchParams(
-    searchParams.toString()
+    searchParams.toString(),
   );
   const queryType: string =
     type === "search"
       ? replaceDashWithSpaces(`${updatedSearchParams}`)
       : `query=${replaceAmpersandAndDashWithSpace(
-          `${lowerCase(`${category}`)}`
+          `${lowerCase(`${category}`)}`,
         )}&${updatedSearchParams.toString()}`;
   const { data, isSuccess, isLoading, isError } =
     useGetAuthCoursesByCategoryQuery({
@@ -55,7 +55,9 @@ const CoursesIndexDisplay: FC<ICoursesProps> = ({ type }): ReactElement => {
   }
 
   const categoryName = find(categories(), (item: string) =>
-    location.pathname.includes(replaceSpacesWithDash(`${lowerCase(`${item}`)}`))
+    location.pathname.includes(
+      replaceSpacesWithDash(`${lowerCase(`${item}`)}`),
+    ),
   );
   const courseCategories = categoryName ?? searchParams.get("query");
 

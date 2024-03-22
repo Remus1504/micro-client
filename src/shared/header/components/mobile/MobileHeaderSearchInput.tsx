@@ -39,7 +39,7 @@ const MobileHeaderSearchInput: FC<IHeaderSideBarProps> = ({
           }}
           className="relative z-10 flex w-full cursor-pointer justify-center self-center pr-12 text-2xl font-bold text-black lg:text-3xl"
         >
-          Jobber
+          Micrograde
         </Link>
       </div>
       <HeaderSearchInput />

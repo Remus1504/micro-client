@@ -8,18 +8,18 @@ import { InstructorContextType } from "src/features/instructors/interfaces/instr
 import CourseCardItem from "src/shared/courses/CourseCardItem";
 import StarRating from "src/shared/rating/rating";
 import { TimeAgo } from "src/shared/utils/time.utils";
-import { rating, sellerOrderList } from "src/shared/utils/utils";
+import { rating, instructorOrderList } from "src/shared/utils/utils";
 import { v4 as uuidv4 } from "uuid";
 
-import ActiveOrderTable from "./ActiveOrderTable";
+import ActiveEnrolmentTable from "./ActiveEnrolmentTable";
 
 const DashboardMain: FC = (): ReactElement => {
   const [type, setType] = useState<string>("active");
-  const { courses, pausedCourses, orders, instructor } =
+  const { courses, pausedCourses, enrolments, instructor } =
     useOutletContext<InstructorContextType>();
   const activeCourses: InstructorCourse[] = filter(
     courses,
-    (course: InstructorCourse) => course.active === true
+    (course: InstructorCourse) => course.active === true,
   );
 
   return (
@@ -31,7 +31,7 @@ const DashboardMain: FC = (): ReactElement => {
               <img
                 className="flex h-20 w-20 self-center rounded-full object-cover md:h-24 md:w-24 lg:h-28 lg:w-28"
                 src={instructor?.profilePicture}
-                alt="Seller image"
+                alt="Instructor image"
               />
               <div className="flex flex-col self-center">
                 <div className="flex cursor-pointer self-center">
@@ -47,7 +47,7 @@ const DashboardMain: FC = (): ReactElement => {
                     <div className="mt-1 w-20 gap-x-2">
                       <StarRating
                         value={rating(
-                          instructor?.ratingSum / instructor?.ratingsCount
+                          instructor?.ratingSum / instructor?.ratingsCount,
                         )}
                         size={14}
                       />
@@ -55,7 +55,7 @@ const DashboardMain: FC = (): ReactElement => {
                     <div className="ml-2 mt-[2px] flex gap-1 text-sm">
                       <span className="text-orange-400">
                         {rating(
-                          instructor?.ratingSum / instructor?.ratingsCount
+                          instructor?.ratingSum / instructor?.ratingsCount,
                         )}
                       </span>
                       <span>{instructor?.ratingsCount}</span>
@@ -84,7 +84,7 @@ const DashboardMain: FC = (): ReactElement => {
                 </div>
                 <div className="ml-8 mr-4 font-bold sm:ml-0">
                   {TimeAgo.formatDateToMonthAndYear(
-                    `${instructor?.createdAt || new Date()}`
+                    `${instructor?.createdAt || new Date()}`,
                   )}
                 </div>
               </li>
@@ -136,14 +136,14 @@ const DashboardMain: FC = (): ReactElement => {
               PAUSED
             </li>
             <li
-              onClick={() => setType("orders")}
+              onClick={() => setType("enrolments")}
               className={`mr-9 w-full py-3 text-xs font-bold md:w-auto md:py-5 md:text-sm ${
-                type === "orders"
+                type === "enrolments"
                   ? "text-sky-500 md:border-b-2 md:border-sky-500"
                   : ""
               }`}
             >
-              ACTIVE ORDERS
+              ACTIVE Enrolments
             </li>
           </ul>
         </div>
@@ -166,9 +166,9 @@ const DashboardMain: FC = (): ReactElement => {
               ))}
             </div>
           )}
-          {type === "orders" && (
-            <ActiveOrderTable
-              activeOrders={sellerOrderList("in progress", orders)}
+          {type === "enrolments" && (
+            <ActiveEnrolmentTable
+              activeEnrolments={instructorOrderList("in progress", enrolments)}
             />
           )}
         </div>

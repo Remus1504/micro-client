@@ -1,47 +1,47 @@
-import { IResponse } from "src/shared/shared.interface";
-import { api } from "src/store/apis";
+import { IResponse } from 'src/shared/shared.interface';
+import { api } from 'src/store/apis';
 
 import {
   ICreateCourse,
   InstructorCourse,
-} from "../interfaces/course.interface";
+} from '../interfaces/course.interface';
 
 export const coursesApi = api.injectEndpoints({
   endpoints: (build) => ({
     getCourseById: build.query<IResponse, string>({
       query: (courseId: string) => `course/${courseId}`,
-      providesTags: ["Courses"],
+      providesTags: ['Courses'],
     }),
     getCoursesByInstructorId: build.query<IResponse, string>({
       query: (instructorId: string) => `course/instructor/${instructorId}`,
-      providesTags: ["Courses"],
+      providesTags: ['Courses'],
     }),
     getInstructorPausedCourses: build.query<IResponse, string>({
       query: (instructorId: string) =>
         `course/instructor/pause/${instructorId}`,
-      providesTags: ["Courses"],
+      providesTags: ['Courses'],
     }),
     getCoursesByCategory: build.query<IResponse, string>({
       query: (username: string) => `course/category/${username}`,
-      providesTags: ["Courses"],
+      providesTags: ['Courses'],
     }),
     getMoreCoursesLikeThis: build.query<IResponse, string>({
       query: (courseId: string) => `course/similar/${courseId}`,
-      providesTags: ["Courses"],
+      providesTags: ['Courses'],
     }),
     getTopRatedCoursesByCategory: build.query<IResponse, string>({
       query: (username: string) => `course/top/${username}`,
-      providesTags: ["Courses"],
+      providesTags: ['Courses'],
     }),
     createCourse: build.mutation<IResponse, ICreateCourse>({
       query(body: ICreateCourse) {
         return {
-          url: "course/create",
-          method: "POST",
+          url: 'course/create',
+          method: 'POST',
           body,
         };
       },
-      invalidatesTags: ["Courses"],
+      invalidatesTags: ['Courses'],
     }),
     updateCourse: build.mutation<
       IResponse,
@@ -50,11 +50,11 @@ export const coursesApi = api.injectEndpoints({
       query({ courseId, course }) {
         return {
           url: `course/${courseId}`,
-          method: "PUT",
+          method: 'PUT',
           body: course,
         };
       },
-      invalidatesTags: ["Courses"],
+      invalidatesTags: ['Courses'],
     }),
     updateActiveCourse: build.mutation<
       IResponse,
@@ -63,11 +63,11 @@ export const coursesApi = api.injectEndpoints({
       query({ courseId, active }) {
         return {
           url: `course/active/${courseId}`,
-          method: "PUT",
+          method: 'PUT',
           body: { active },
         };
       },
-      invalidatesTags: ["Courses"],
+      invalidatesTags: ['Courses'],
     }),
     deleteCourse: build.mutation<
       IResponse,
@@ -76,10 +76,10 @@ export const coursesApi = api.injectEndpoints({
       query({ courseId, instructorId }) {
         return {
           url: `course/${courseId}/${instructorId}`,
-          method: "DELETE",
+          method: 'DELETE',
         };
       },
-      invalidatesTags: ["Courses"],
+      invalidatesTags: ['Courses'],
     }),
   }),
 });

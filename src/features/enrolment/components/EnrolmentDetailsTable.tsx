@@ -4,33 +4,36 @@ import { FaBox, FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { TimeAgo } from "src/shared/utils/time.utils";
 
-import { OrderContext } from "../context/OrderContext";
-import { IOrderInvoice, IOrderProps } from "../interfaces/enrolment.interface";
+import { EnrolmentContext } from "../context/EnrolmentContext";
+import {
+  IEnrolmentInvoice,
+  IEnrolmentProps,
+} from "../interfaces/enrolment.interface";
 import Invoice from "./Invoice/Invoice";
 
-const OrderDetailsTable: FC<IOrderProps> = ({
-  order,
+const EnrolmentDetailsTable: FC<IEnrolmentProps> = ({
+  enrolment,
   authUser,
 }): ReactElement => {
   const [showOrderDetailsPanel, setShowOrderDetailsPanel] =
     useState<boolean>(false);
-  const orderInvoice = useRef<IOrderInvoice>({} as IOrderInvoice);
-  if (order && Object.keys(order).length > 0) {
-    orderInvoice.current = {
-      invoiceId: `${order.orderId}`,
-      orderId: `${order.orderId}`,
-      date: `${order.dateEnrolled}`,
-      studentUsername: `${order.studentUsername}`,
-      orderService: [
+  const enrolmentInvoice = useRef<IEnrolmentInvoice>({} as IEnrolmentInvoice);
+  if (enrolment && Object.keys(enrolment).length > 0) {
+    enrolmentInvoice.current = {
+      invoiceId: `${enrolment.enrolmentId}`,
+      enrolmentId: `${enrolment.enrolmentId}`,
+      date: `${enrolment.dateEnrolled}`,
+      studentUsername: `${enrolment.studentUsername}`,
+      enrolmentService: [
         {
-          service: `${order.courseMainTitle}`,
+          service: `${enrolment.courseMainTitle}`,
           quantity: 1,
-          price: order.price,
+          price: enrolment.price,
         },
         {
           service: "Service Fee",
           quantity: 1,
-          price: parseInt(`${order.serviceFee}`),
+          price: parseInt(`${enrolment.serviceFee}`),
         },
       ],
     };
@@ -47,7 +50,7 @@ const OrderDetailsTable: FC<IOrderProps> = ({
           </div>
           <div className="w-full cursor-pointer">
             <div className="mt-2 flex items-center justify-between font-medium text-gray-500">
-              <span>Your order details</span>
+              <span>Your enrolment details</span>
               <div
                 onClick={() =>
                   setShowOrderDetailsPanel((item: boolean) => !item)
@@ -60,7 +63,7 @@ const OrderDetailsTable: FC<IOrderProps> = ({
                 )}
               </div>
             </div>
-            {showOrderDetailsPanel && order && (
+            {showOrderDetailsPanel && enrolment && (
               <div className="my-3 flex flex-col">
                 <div className="flex justify-between">
                   <div className="flex gap-2 text-sm md:text-base">
@@ -70,27 +73,27 @@ const OrderDetailsTable: FC<IOrderProps> = ({
                         to=""
                         className="font-bold text-blue-400 hover:underline"
                       >
-                        {order.studentUsername}
+                        {enrolment.studentUsername}
                       </Link>
                     </div>
                     <div className="flex gap-1">|</div>
                     <div className="flex gap-2">
                       Date enrolled{" "}
                       <p className="font-bold italic">
-                        {TimeAgo.dayMonthYear(`${order?.dateEnrolled}`)}
+                        {TimeAgo.dayMonthYear(`${enrolment?.dateEnrolled}`)}
                       </p>
                     </div>
                   </div>
-                  {order.studentUsername === authUser.username && (
+                  {enrolment.studentUsername === authUser.username && (
                     <PDFDownloadLink
                       document={
-                        <OrderContext.Provider
-                          value={{ orderInvoice: orderInvoice.current }}
+                        <EnrolmentContext.Provider
+                          value={{ enrolmentInvoice: enrolmentInvoice.current }}
                         >
                           <Invoice />
-                        </OrderContext.Provider>
+                        </EnrolmentContext.Provider>
                       }
-                      fileName={`${orderInvoice.current.invoiceId}.pdf`}
+                      fileName={`${enrolmentInvoice.current.invoiceId}.pdf`}
                     >
                       <div className="cursor-pointer text-blue-400 underline">
                         Download invoice
@@ -133,21 +136,21 @@ const OrderDetailsTable: FC<IOrderProps> = ({
                             scope="row"
                             className="whitespace-wrap px-4 py-4 font-bold"
                           >
-                            {order.offer.gigTitle}
+                            {enrolment.offer.courseTitle}
                           </td>
-                          <td className="px-4 py-4">{order.quantity}</td>
+                          <td className="px-4 py-4">{enrolment.quantity}</td>
                           <td className="px-4 py-4">
-                            {order.offer.deliveryInDays} day
-                            {order.offer.durationInDays > 1 ? "s" : ""}
+                            {enrolment.offer.durationInDays} day
+                            {enrolment.offer.durationInDays > 1 ? "s" : ""}
                           </td>
-                          <td className="px-4 py-4">${order.price}</td>
+                          <td className="px-4 py-4">${enrolment.price}</td>
                         </tr>
                         <tr className="bg-white">
                           <th
                             scope="row"
                             className="whitespace-wrap px-4 py-4 font-normal"
                           >
-                            {order.offer.description}
+                            {enrolment.offer.description}
                           </th>
                           <td className="px-4 py-4"></td>
                           <td className="px-4 py-4"></td>
@@ -162,7 +165,7 @@ const OrderDetailsTable: FC<IOrderProps> = ({
                           <td className="px-4 py-3"></td>
                           <td className="px-4 py-3"></td>
                           <td className="px-4 py-3 font-bold">
-                            ${order.serviceFee?.toFixed(2)}
+                            ${enrolment.serviceFee?.toFixed(2)}
                           </td>
                         </tr>
                         <tr>
@@ -172,7 +175,9 @@ const OrderDetailsTable: FC<IOrderProps> = ({
                           <td className="px-4 py-3"></td>
                           <td className="px-4 py-3"></td>
                           <td className="px-4 py-3 font-bold">
-                            ${order.price + parseInt(`${order.serviceFee}`)}
+                            $
+                            {enrolment.price +
+                              parseInt(`${enrolment.serviceFee}`)}
                           </td>
                         </tr>
                       </tfoot>
@@ -188,4 +193,4 @@ const OrderDetailsTable: FC<IOrderProps> = ({
   );
 };
 
-export default OrderDetailsTable;
+export default EnrolmentDetailsTable;

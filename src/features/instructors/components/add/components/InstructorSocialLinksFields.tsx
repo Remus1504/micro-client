@@ -3,7 +3,7 @@ import { ISocialLinksProps } from "src/features/instructors/interfaces/instructo
 import Button from "src/shared/Button/Button";
 import TextInput from "src/shared/Entries/Input";
 
-const SellerSocialLinksFields: FC<ISocialLinksProps> = ({
+const InstructorSocialLinksFields: FC<ISocialLinksProps> = ({
   socialFields,
   setSocialFields,
 }): ReactElement => {
@@ -23,7 +23,7 @@ const SellerSocialLinksFields: FC<ISocialLinksProps> = ({
 
   const handleSocialLinksFieldsChange = (
     event: ChangeEvent,
-    index: number
+    index: number,
   ): void => {
     if (setSocialFields && socialFields) {
       const target: HTMLInputElement = event.target as HTMLInputElement;
@@ -72,4 +72,4 @@ const SellerSocialLinksFields: FC<ISocialLinksProps> = ({
   );
 };
 
-export default SellerSocialLinksFields;
+export default InstructorSocialLinksFields;

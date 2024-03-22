@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from "@react-pdf/renderer";
 import { FC, Fragment, ReactElement, useContext } from "react";
-import { OrderContext } from "src/features/enrolment/context/OrderContext";
-import { IOrderInvoiceService } from "src/features/enrolment/interfaces/enrolment.interface";
+import { EnrolmentContext } from "src/features/enrolment/context/EnrolmentContext";
+import { IEnrolmentInvoiceService } from "src/features/enrolment/interfaces/enrolment.interface";
 
 const styles = StyleSheet.create({
   tbody: {
@@ -16,14 +16,14 @@ const styles = StyleSheet.create({
 });
 
 const TableBody: FC = (): ReactElement => {
-  const { orderInvoice } = useContext(OrderContext);
+  const { enrolmentInvoice } = useContext(EnrolmentContext);
 
   return (
     <div>
-      {orderInvoice &&
-        Object.keys(orderInvoice).length &&
-        orderInvoice.orderService.map(
-          (order: IOrderInvoiceService, index: number) => (
+      {enrolmentInvoice &&
+        Object.keys(enrolmentInvoice).length &&
+        enrolmentInvoice.enrolmentService.map(
+          (order: IEnrolmentInvoiceService, index: number) => (
             <Fragment key={index}>
               <View style={{ width: "100%", flexDirection: "row" }}>
                 <View style={[styles.tbody, styles.tbody2]}>
@@ -52,7 +52,7 @@ const TableBody: FC = (): ReactElement => {
                 </View>
               </View>
             </Fragment>
-          )
+          ),
         )}
     </div>
   );

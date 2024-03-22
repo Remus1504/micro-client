@@ -6,14 +6,14 @@ import {
   useNavigate,
 } from "react-router-dom";
 import { CourseContext } from "src/features/courses/context/CourseContext";
-import { IOffer } from "src/features/enrolment/interfaces/enrolment.interface";
+import { IEnrolment } from "src/features/enrolment/interfaces/enrolment.interface";
 import Button from "src/shared/Button/Button";
 import ApprovalModal from "src/shared/modals/Approval";
 import { IApprovalModalContent } from "src/shared/modals/interfaces/modal.interface";
 import { useAppSelector } from "src/store/store";
 import { IReduxState } from "src/store/store.interface";
 
-const GigPackage: FC = (): ReactElement => {
+const CoursePackage: FC = (): ReactElement => {
   const authUser = useAppSelector((state: IReduxState) => state.authUser);
   const { course } = useContext(CourseContext);
   const [approvalModalContent, setApprovalModalContent] =
@@ -23,11 +23,11 @@ const GigPackage: FC = (): ReactElement => {
 
   const continueToCheck = () => {
     const durationInDays: number = parseInt(
-      course.expectedDuration.split(" ")[0]
+      course.expectedDuration.split(" ")[0],
     );
     const newDate: Date = new Date();
     newDate.setDate(newDate.getDate() + durationInDays);
-    const offerParams: IOffer = {
+    const offerParams: IEnrolment = {
       courseTitle: course.title,
       description: course.basicDescription,
       price: course.price,
@@ -41,7 +41,7 @@ const GigPackage: FC = (): ReactElement => {
       `/course/checkout/${course.id}?${createSearchParams({
         offer: JSON.stringify(offerParams),
       })}`,
-      { state: course }
+      { state: course },
     );
   };
 
@@ -118,4 +118,4 @@ const GigPackage: FC = (): ReactElement => {
   );
 };
 
-export default GigPackage;
+export default CoursePackage;

@@ -23,14 +23,15 @@ const Home: FC = (): ReactElement => {
     useGetCoursesByCategoryQuery(`${authUser.username}`);
   const { data: topCoursesData, isSuccess: isTopCoursesSucess } =
     useGetTopRatedCoursesByCategoryQuery(`${authUser.username}`);
-  // const { data: sellerData, isSuccess: isSellerDataSuccess } = useGetMoreGigsLikeThisQuery('6559d9a3620b7db8c1fb7f01');
+
   let instructors: InstructorDocument[] = [];
   let categoryCourses: InstructorCourse[] = [];
   let topCourses: InstructorCourse[] = [];
 
-  if (isSuccess) {
+  if (isSuccess && data?.instructors) {
     instructors = data.instructors as InstructorDocument[];
   }
+  console.log("Instuctors", instructors);
 
   if (isCategorySuccess) {
     categoryCourses = categoryData.courses as InstructorCourse[];
@@ -39,10 +40,6 @@ const Home: FC = (): ReactElement => {
   if (isTopCoursesSucess) {
     topCourses = topCoursesData.courses as InstructorCourse[];
   }
-
-  // if (isSellerDataSuccess) {
-  //   topCourses = sellerData.courses as InstructorCourse[];
-  // }
 
   useEffect(() => {
     socketService.setupSocketConnection();
@@ -56,7 +53,7 @@ const Home: FC = (): ReactElement => {
           courses={topCourses}
           title="Top rated services in"
           subTitle={`Highest rated talents for all your ${lowerCase(
-            topCourses[0].categories
+            topCourses[0].categories,
           )} needs.`}
           category={topCourses[0].categories}
           width="w-72"
@@ -71,7 +68,9 @@ const Home: FC = (): ReactElement => {
           category={categoryCourses[0].categories}
         />
       )}
-      <FeaturedExperts instructors={instructors} />
+      {Array.isArray(instructors) && instructors.length > 0 && (
+        <FeaturedExperts instructors={instructors} />
+      )}
     </div>
   );
 };

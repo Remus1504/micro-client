@@ -20,7 +20,7 @@ const LOADING_STATUS = {
 };
 
 const ReviewModal: FC<IModalProps> = ({
-  order,
+  enrolment,
   type,
   onClose,
 }): ReactElement => {
@@ -34,19 +34,19 @@ const ReviewModal: FC<IModalProps> = ({
     try {
       setStatus(LOADING_STATUS.LOADING);
       const reviewDocument: IReviewDocument = {
-        courseId: `${order?.courseId}`,
+        courseId: `${enrolment?.courseId}`,
         reviewerId:
           type === "student-review"
-            ? `${order?.studentId}`
-            : `${order?.instructorId}`,
-        instructorId: `${order?.instructorId}`,
+            ? `${enrolment?.studentId}`
+            : `${enrolment?.instructorId}`,
+        instructorId: `${enrolment?.instructorId}`,
         reviewerImage:
           type === "student-review"
-            ? `${order?.studentImage}`
-            : `${order?.instructorImage}`,
+            ? `${enrolment?.studentImage}`
+            : `${enrolment?.instructorImage}`,
         review,
         rating: reviewRating,
-        orderId: `${order?.orderId}`,
+        enrolmentId: `${enrolment?.enrolmentId}`,
         reviewType: type,
         reviewerUsername: `${authUser?.username}`,
         country: `${authUser?.username}`,
@@ -84,7 +84,9 @@ const ReviewModal: FC<IModalProps> = ({
         <div className="relative bottom-auto left-auto right-auto top-auto max-h-[90vh] min-w-[500px] bg-white p-4 text-[#404145]">
           <div className="border-grey mb-[10px] w-full border-b text-left">
             <h4 className="pb-2 text-[17px] font-bold">
-              {type === "student-review" ? "Review Seller" : "Review Buyer"}
+              {type === "student-review"
+                ? "Review Instructor"
+                : "Review Studentt"}
             </h4>
           </div>
 
@@ -95,7 +97,7 @@ const ReviewModal: FC<IModalProps> = ({
             <TextAreaInput
               className="border-grey mb-1 w-full rounded border p-2.5 text-sm font-normal text-gray-600 focus:outline-none"
               name="review"
-              placeholder="What was it like working with the seller?"
+              placeholder="What was it like working with the instructor?"
               value={review}
               rows={4}
               onChange={(event: ChangeEvent) => {

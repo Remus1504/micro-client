@@ -35,7 +35,7 @@ const RegisterModal: FC<IModalBgProps> = ({
   const [country, setCountry] = useState<string>("Select Country");
   const [passwordType, setPasswordType] = useState<string>("password");
   const [profileImage, setProfileImage] = useState<string>(
-    "https://placehold.co/330x220?text=Profile+Image"
+    "https://placehold.co/330x220?text=Profile+Image",
   );
   const [showImageSelect, setShowImageSelect] = useState<boolean>(false);
   const [userInfo, setUserInfo] = useState<ISignUpPayload>({
@@ -79,7 +79,7 @@ const RegisterModal: FC<IModalBgProps> = ({
         dispatch(updateCategoryContainer(true));
         saveToSessionStorage(
           JSON.stringify(true),
-          JSON.stringify(result.user?.username)
+          JSON.stringify(result.user?.username),
         );
       }
     } catch (error) {
@@ -102,7 +102,7 @@ const RegisterModal: FC<IModalBgProps> = ({
                 }
               />
             )}
-            <h1 className="flex w-full justify-center">Join Jobber</h1>
+            <h1 className="flex w-full justify-center">Join Micrograde</h1>
             <Button
               className="cursor-pointer rounded text-gray-400 hover:text-gray-600"
               role="button"

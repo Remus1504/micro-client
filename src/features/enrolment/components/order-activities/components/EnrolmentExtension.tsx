@@ -1,7 +1,7 @@
 import { FC, ReactElement, useContext, useState } from "react";
 import { FaCheck } from "react-icons/fa";
-import { OrderContext } from "src/features/enrolment/context/OrderContext";
-import { IExtendedDelivery } from "src/features/enrolment/interfaces/enrolment.interface";
+import { EnrolmentContext } from "src/features/enrolment/context/EnrolmentContext";
+import { IExtendedEnrolment } from "src/features/enrolment/interfaces/enrolment.interface";
 import { useUpdateStartDateMutation } from "src/features/enrolment/services/enrolment.service";
 import Button from "src/shared/Button/Button";
 import ApprovalModal from "src/shared/modals/Approval";
@@ -14,7 +14,7 @@ import {
 } from "src/shared/utils/utils";
 
 const EnrolmentExtension: FC = (): ReactElement => {
-  const { order, authUser } = useContext(OrderContext);
+  const { enrolment, authUser } = useContext(EnrolmentContext);
   const [approvalModalContent, setApprovalModalContent] =
     useState<IApprovalModalContent>();
   const [showExtensionApprovalModal, setShowExtensionApprovalModal] =
@@ -23,15 +23,15 @@ const EnrolmentExtension: FC = (): ReactElement => {
 
   const onApproveHandler = async (): Promise<void> => {
     try {
-      const extended: IExtendedDelivery = {
-        originalDate: `${order?.offer.oldDeliveryDate}`,
-        newDate: `${order?.requestExtension?.newDate}`,
-        days: parseInt(`${order?.requestExtension?.days}`),
-        reason: `${order?.requestExtension?.reason}`,
+      const extended: IExtendedEnrolment = {
+        originalDate: `${enrolment?.offer.oldStartDate}`,
+        newDate: `${enrolment?.requestExtension?.newDate}`,
+        days: parseInt(`${enrolment?.requestExtension?.days}`),
+        reason: `${enrolment?.requestExtension?.reason}`,
         startDateUpdate: `${new Date()}`,
       };
       await updateDeliveryDate({
-        orderId: `${order?.orderId}`,
+        enrolmentId: `${enrolment?.enrolmentId}`,
         type: lowerCase(`${approvalModalContent?.btnText}`),
         body: extended,
       });
@@ -52,11 +52,11 @@ const EnrolmentExtension: FC = (): ReactElement => {
           onClick={onApproveHandler}
         />
       )}
-      {order?.requestExtension &&
-        order.requestExtension.newDate &&
+      {enrolment?.requestExtension &&
+        enrolment.requestExtension.newDate &&
         TimeAgo.compareDates(
-          order.offer.oldStartDate,
-          order.offer.newStartDate
+          enrolment.offer.oldStartDate,
+          enrolment.offer.newStartDate,
         ) === 0 && (
           <div className="flex rounded-[4px] bg-white px-4 py-1">
             <div className="w-full">
@@ -69,10 +69,10 @@ const EnrolmentExtension: FC = (): ReactElement => {
                 <div className="border-grey w-full cursor-pointer border-b pb-6">
                   <div className="flex items-center justify-between font-medium text-gray-500">
                     <div className="items-left mt-2 flex flex-col gap-2 text-gray-500 md:flex-row md:items-center">
-                      {order?.studentUsername === authUser?.username ? (
+                      {enrolment?.studentUsername === authUser?.username ? (
                         <span className="text-sm font-bold md:text-base">
-                          {order.instructorUsername} requested for a enrolment
-                          date extension
+                          {enrolment.instructorUsername} requested for a
+                          enrolment date extension
                         </span>
                       ) : (
                         <span className="text-sm font-bold md:text-base">
@@ -90,7 +90,7 @@ const EnrolmentExtension: FC = (): ReactElement => {
                           </span>
                           <p className="col-span-2 text-sm">
                             {TimeAgo.dayMonthYear(
-                              order?.requestExtension.originalDate
+                              enrolment?.requestExtension.originalDate,
                             )}
                           </p>
                         </div>
@@ -100,7 +100,7 @@ const EnrolmentExtension: FC = (): ReactElement => {
                           </span>
                           <p className="col-span-2 text-sm">
                             {TimeAgo.dayMonthYear(
-                              order?.requestExtension.newDate
+                              enrolment?.requestExtension.newDate,
                             )}
                           </p>
                         </div>
@@ -109,14 +109,14 @@ const EnrolmentExtension: FC = (): ReactElement => {
                             Reason
                           </span>
                           <p className="col-span-2 text-sm">
-                            {order?.requestExtension.reason}
+                            {enrolment?.requestExtension.reason}
                           </p>
                         </div>
                       </div>
                     </div>
                     <div className="border-grey border-b py-1"></div>
                     <div className="flex gap-4 px-3 py-4">
-                      {order.studentUsername === authUser?.username && (
+                      {enrolment.studentUsername === authUser?.username && (
                         <>
                           <Button
                             className="rounded bg-green-500 px-6 py-3 text-center text-sm font-bold text-white hover:bg-green-400 focus:outline-none md:px-4 md:py-2 md:text-base"
@@ -146,7 +146,7 @@ const EnrolmentExtension: FC = (): ReactElement => {
                           />
                         </>
                       )}
-                      {order.studentUsername !== authUser?.username && (
+                      {enrolment.studentUsername !== authUser?.username && (
                         <span>Waiting for approval for extension.</span>
                       )}
                     </div>
@@ -157,7 +157,7 @@ const EnrolmentExtension: FC = (): ReactElement => {
           </div>
         )}
 
-      {order?.offer.reason && (
+      {enrolment?.offer.reason && (
         <div className="flex rounded-[4px] bg-white px-4 py-1">
           <div className="w-full">
             <div className="flex gap-4">
@@ -169,9 +169,9 @@ const EnrolmentExtension: FC = (): ReactElement => {
               <div className="border-grey w-full cursor-pointer border-b pb-6">
                 <div className="flex items-center justify-between font-medium text-gray-500">
                   <div className="items-left mt-2 flex flex-col gap-2 text-gray-500 md:flex-row md:items-center">
-                    {order?.studentUsername !== authUser?.username ? (
+                    {enrolment?.studentUsername !== authUser?.username ? (
                       <span className="text-sm font-bold md:text-base">
-                        {order.studentUsername} approved enrolment date
+                        {enrolment.studentUsername} approved enrolment date
                         extension request
                       </span>
                     ) : (
@@ -181,7 +181,7 @@ const EnrolmentExtension: FC = (): ReactElement => {
                     )}
                     <p className="text-sm font-normal italic">
                       {TimeAgo.dayWithTime(
-                        `${order?.events.deliveryDateUpdate}`
+                        `${enrolment?.events.startDateUpdate}`,
                       )}
                     </p>
                   </div>
@@ -195,7 +195,7 @@ const EnrolmentExtension: FC = (): ReactElement => {
                         </span>
                         <p className="col-span-2 text-sm">
                           {TimeAgo.dayMonthYear(
-                            `${order?.offer.oldDeliveryDate}`
+                            `${enrolment?.offer.oldStartDate}`,
                           )}
                         </p>
                       </div>
@@ -205,7 +205,7 @@ const EnrolmentExtension: FC = (): ReactElement => {
                         </span>
                         <p className="col-span-2 text-sm">
                           {TimeAgo.dayMonthYear(
-                            `${order?.offer.newDeliveryDate}`
+                            `${enrolment?.offer.newStartDate}`,
                           )}
                         </p>
                       </div>
@@ -214,7 +214,7 @@ const EnrolmentExtension: FC = (): ReactElement => {
                           Reason
                         </span>
                         <p className="col-span-2 text-sm">
-                          {order?.offer.reason}
+                          {enrolment?.offer.reason}
                         </p>
                       </div>
                     </div>

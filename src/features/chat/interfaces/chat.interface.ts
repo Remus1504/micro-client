@@ -1,7 +1,7 @@
-import { ChangeEvent, Dispatch, FormEvent, SetStateAction } from "react";
-import { InstructorCourse } from "src/features/courses/interfaces/course.interface";
-import { IOffer } from "src/features/enrolment/interfaces/enrolment.interface";
-import { InstructorDocument } from "src/features/instructors/interfaces/instructor.interface";
+import { ChangeEvent, Dispatch, FormEvent, SetStateAction } from 'react';
+import { InstructorCourse } from 'src/features/courses/interfaces/course.interface';
+import { IEnrolment } from 'src/features/enrolment/interfaces/enrolment.interface';
+import { InstructorDocument } from 'src/features/instructors/interfaces/instructor.interface';
 
 export interface IChatWindowProps {
   chatMessages: IMessageDocument[];
@@ -45,7 +45,7 @@ export interface IMessageDocument {
   receiverPicture?: string;
   isRead?: boolean;
   hasOffer?: boolean;
-  offer?: IOffer;
+  offer?: IEnrolment;
   hasConversationId?: boolean;
   createdAt?: Date | string;
 }

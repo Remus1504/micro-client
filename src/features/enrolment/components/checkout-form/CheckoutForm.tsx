@@ -32,7 +32,7 @@ const CheckoutForm: FC<ICheckoutProps> = ({
   useEffect(() => {
     if (elements) {
       const element = elements.getElement(
-        PaymentElement
+        PaymentElement,
       ) as StripePaymentElement;
       if (element) {
         setIsStripeLoading(false);
@@ -45,7 +45,7 @@ const CheckoutForm: FC<ICheckoutProps> = ({
       return;
     }
     const clientSecret: string = new URLSearchParams(
-      window.location.search
+      window.location.search,
     ).get("payment_intent_client_secret") as string;
     if (!clientSecret) {
       return;
@@ -78,11 +78,11 @@ const CheckoutForm: FC<ICheckoutProps> = ({
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: `${CLIENT_ENDPOINT}/gig/order/requirement/${courseId}?${createSearchParams(
+        return_url: `${CLIENT_ENDPOINT}/course/enrolment/requirement/${courseId}?${createSearchParams(
           {
             offer: JSON.stringify(offer),
             order_date: `${new Date()}`,
-          }
+          },
         )}`,
       },
     });

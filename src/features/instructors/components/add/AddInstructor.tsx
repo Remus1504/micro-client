@@ -94,7 +94,7 @@ const AddInstructor: FC = (): ReactElement => {
   });
   const dispatch = useAppDispatch();
   const navigate: NavigateFunction = useNavigate();
-  const [createSeller, { isLoading }] = useCreateInstructorMutation();
+  const [createInstructor, { isLoading }] = useCreateInstructorMutation();
 
   const errors = [
     ...personalInfoErrors,
@@ -111,16 +111,16 @@ const AddInstructor: FC = (): ReactElement => {
       if (isValid) {
         const skills: string[] = filter(
           skillsFields,
-          (skill: string) => skill !== ""
+          (skill: string) => skill !== "",
         ) as string[];
         const socialLinks: string[] = filter(
           socialFields,
-          (item: string) => item !== ""
+          (item: string) => item !== "",
         ) as string[];
         const certificates: ICertificate[] = filter(
           certificateFields,
           (item: ICertificate) =>
-            item.name !== "" && item.from !== "" && item.year !== ""
+            item.name !== "" && item.from !== "" && item.year !== "",
         ) as ICertificate[];
         const instructorData: InstructorDocument = {
           email: `${authUser.email}`,
@@ -142,12 +142,14 @@ const AddInstructor: FC = (): ReactElement => {
           ...student,
           isInstructor: true,
         };
-        const response: IResponse = await createSeller(instructorData).unwrap();
+        const response: IResponse =
+          await createInstructor(instructorData).unwrap();
         dispatch(addInstructor(response.instructor));
         dispatch(addStudent(updateStudent));
         navigate(
-          `/instructor_profile/${lowerCase(`${authUser.username}`)}/${response
-            .instructor?._id}/edit`
+          `/instructor_profile/${lowerCase(`${authUser.username}`)}/${
+            response.instructor?._id
+          }/edit`,
         );
       }
     } catch (error) {

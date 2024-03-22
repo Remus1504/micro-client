@@ -1,7 +1,7 @@
 import { ChangeEvent, FC, ReactElement, useRef, useState } from "react";
 import { FaCircleNotch, FaPaperclip, FaRegFile, FaTimes } from "react-icons/fa";
 import { IDeliveredWork } from "src/features/enrolment/interfaces/enrolment.interface";
-import { useDeliverOrderMutation } from "src/features/enrolment/services/enrolment.service";
+import { useDeliverEnrolmentMutation } from "src/features/enrolment/services/enrolment.service";
 
 import Button from "../Button/Button";
 import TextAreaInput from "../Entries/TextAreaInput";
@@ -12,14 +12,14 @@ import { IModalProps } from "./interfaces/modal.interface";
 import ModalBg from "./ModalBg";
 
 const DeliverWorkModal: FC<IModalProps> = ({
-  order,
+  enrolment,
   onClose,
 }): ReactElement => {
   const [description, setDescription] = useState<string>("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [showImagePreview, setShowImagePreview] = useState<boolean>(false);
   const fileRef = useRef<HTMLInputElement>(null);
-  const [deliverOrder, { isLoading }] = useDeliverOrderMutation();
+  const [deliverOrder, { isLoading }] = useDeliverEnrolmentMutation();
 
   const handleFileChange = (event: ChangeEvent): void => {
     const target: HTMLInputElement = event.target as HTMLInputElement;
@@ -44,13 +44,16 @@ const DeliverWorkModal: FC<IModalProps> = ({
         fileSize: selectedWorkFile.size,
         fileName: selectedWorkFile.name,
       };
-      await deliverOrder({ orderId: `${order?.orderId}`, body: completedWork });
+      await deliverOrder({
+        enrolmentId: `${enrolment?.enrolmentId}`,
+        body: completedWork,
+      });
       showSuccessToast("Order delivered successfully.");
       if (onClose) {
         onClose();
       }
     } catch (error) {
-      showErrorToast("Error deliverying order.");
+      showErrorToast("Error deliverying enrolment.");
     }
   };
 

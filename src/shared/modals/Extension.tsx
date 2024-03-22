@@ -1,7 +1,7 @@
 import { ChangeEvent, FC, ReactElement, useState } from "react";
 import {
   IExtendedDateModalProps,
-  IExtendedDelivery,
+  IExtendedEnrolment,
 } from "src/features/enrolment/interfaces/enrolment.interface";
 import { useRequestStartDateExtensionMutation } from "src/features/enrolment/services/enrolment.service";
 
@@ -13,26 +13,26 @@ import { showErrorToast } from "../utils/utils";
 import ModalBg from "./ModalBg";
 
 const ExtendDateModal: FC<IExtendedDateModalProps> = ({
-  order,
+  enrolment,
   onClose,
 }): ReactElement => {
   const [reason, setReason] = useState<string>("");
   const [selectedDay, setSelectedDay] = useState<string>(
-    "Select number of days"
+    "Select number of days",
   );
   const [deliveryDate, setDeliveryDate] = useState<string>("");
   const [requestDeliveryDateExtension] = useRequestStartDateExtensionMutation();
 
   const requestExtension = async (): Promise<void> => {
     try {
-      const extended: IExtendedDelivery = {
-        originalDate: order.offer.oldStartDate,
+      const extended: IExtendedEnrolment = {
+        originalDate: enrolment.offer.oldStartDate,
         newDate: deliveryDate,
         days: parseInt(selectedDay),
         reason,
       };
       await requestDeliveryDateExtension({
-        orderId: order.orderId,
+        enrolmentId: enrolment.enrolmentId,
         body: extended,
       }).unwrap();
       onClose();
@@ -47,17 +47,17 @@ const ExtendDateModal: FC<IExtendedDateModalProps> = ({
         <div className="relative bottom-auto left-auto right-auto top-auto max-h-[90vh] min-w-[350px] bg-white p-4">
           <div className="w-full text-left">
             <h4 className="mb-3 text-base font-bold">
-              Request: Extend delivery date
+              Request: Extend the start date
             </h4>
             <div className="alerts alert-warning rounded-none pb-[6px] text-sm font-semibold text-white">
-              Extending the delivery date might affect buyer satisfaction.
+              Extending the start date might student satisfaction.
             </div>
           </div>
           <div className="">
             <div className="mb-5">
               <h4 className="mb-0 text-sm font-bold">Original date</h4>
               <span className="text-[13px]">
-                {TimeAgo.dayMonthYear(order.offer.oldStartDate)}
+                {TimeAgo.dayMonthYear(enrolment.offer.oldStartDate)}
               </span>
             </div>
             <div className="relative mb-[66px]">
@@ -72,7 +72,9 @@ const ExtendDateModal: FC<IExtendedDateModalProps> = ({
                 setValue={setSelectedDay}
                 onClick={(item: string) => {
                   const days: number = parseInt(`${item}`);
-                  const currentDate: Date = new Date(order.offer.oldStartDate);
+                  const currentDate: Date = new Date(
+                    enrolment.offer.oldStartDate,
+                  );
                   currentDate.setDate(currentDate.getDate() + days);
                   setDeliveryDate(`${currentDate}`);
                 }}
@@ -80,7 +82,7 @@ const ExtendDateModal: FC<IExtendedDateModalProps> = ({
             </div>
             <div className="mb-5">
               <h4 className="mb-[5px] text-sm font-bold">
-                Help the buyer understand
+                Help the student understand
               </h4>
               <TextAreaInput
                 className="border-grey mb-1 w-full rounded border p-2.5 text-sm font-normal text-gray-600 focus:outline-none"

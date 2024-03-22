@@ -1,9 +1,9 @@
-import { InstructorDocument, courseType } from "@remus1504/micrograde";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction } from 'react';
 import {
   IRatingCategories,
   IReviewDocument,
-} from "src/features/enrolment/interfaces/review.interface";
+} from 'src/features/enrolment/interfaces/review.interface';
+import { InstructorDocument } from 'src/features/instructors/interfaces/instructor.interface';
 
 export interface ITagsInputProps {
   title: string;
@@ -66,7 +66,7 @@ export interface ICoursesProps {
 
 export type CourseType = string | string[] | number | unknown | undefined;
 
-export interface ICreateCourse extends Record<string, courseType> {
+export interface ICreateCourse extends Record<string, CourseType> {
   // [key: string]: string | string[] | number | undefined;
   instructorId?: string;
   profilePicture?: string;

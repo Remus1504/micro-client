@@ -13,7 +13,7 @@ import { Link } from "react-router-dom";
 import { addAuthUser } from "src/features/auth/reducers/authentication.reducers";
 import { useResendEmailMutation } from "src/features/auth/services/authentication.service";
 import { IMessageDocument } from "src/features/chat/interfaces/chat.interface";
-import { IOrderNotifcation } from "src/features/enrolment/interfaces/enrolment.interface";
+import { IEnrolmentNotifcation } from "src/features/enrolment/interfaces/enrolment.interface";
 import { useGetNotificationsByIdQuery } from "src/features/enrolment/services/notification.service";
 import Banner from "src/shared/Banner/banner";
 import Button from "src/shared/Button/Button";
@@ -39,7 +39,7 @@ import MessageDropdown from "./MessageDropdown";
 import HomeHeaderSideBar from "./mobile/HomeHeaderSideBar";
 import MobileHeaderSearchInput from "./mobile/MobileHeaderSearchInput";
 import NotificationDropdown from "./NotificationDropdown";
-import OrderDropdown from "./OrderDropdown";
+import EnrolmentDropdown from "./EnrolmentDropdown";
 import SettingsDropdown from "./SettingsDropdown";
 
 const HomeHeader: FC<IHomeHeaderProps> = ({
@@ -50,7 +50,7 @@ const HomeHeader: FC<IHomeHeaderProps> = ({
   const logout = useAppSelector((state: IReduxState) => state.logout);
   const student = useAppSelector((state: IReduxState) => state.student);
   const notification = useAppSelector(
-    (state: IReduxState) => state.notification
+    (state: IReduxState) => state.notification,
   );
   const settingsDropdownRef = useRef<HTMLDivElement | null>(null);
   const messageDropdownRef = useRef<HTMLDivElement | null>(null);
@@ -62,13 +62,13 @@ const HomeHeader: FC<IHomeHeaderProps> = ({
   const dispatch = useAppDispatch();
   const { data, isSuccess } = useGetNotificationsByIdQuery(
     `${authUser.username}`,
-    { refetchOnMountOrArgChange: true }
+    { refetchOnMountOrArgChange: true },
   );
   const [resendEmail] = useResendEmailMutation();
 
   const [isSettingsDropdown, setIsSettingsDropdown] = useDetectOutsideClick(
     settingsDropdownRef,
-    false
+    false,
   );
   const [isMessageDropdownOpen, setIsMessageDropdownOpen] =
     useDetectOutsideClick(messageDropdownRef, false);
@@ -76,7 +76,7 @@ const HomeHeader: FC<IHomeHeaderProps> = ({
     useDetectOutsideClick(notificationDropdownRef, false);
   const [isOrderDropdownOpen, setIsOrderDropdownOpen] = useDetectOutsideClick(
     orderDropdownRef,
-    false
+    false,
   );
 
   const onResendEmail = async (): Promise<void> => {
@@ -152,10 +152,10 @@ const HomeHeader: FC<IHomeHeaderProps> = ({
     socketService.setupSocketConnection();
     socket.emit("getLoggedInUsers", "");
     if (isSuccess) {
-      const list: IOrderNotifcation[] = filter(
+      const list: IEnrolmentNotifcation[] = filter(
         data.notifications,
-        (item: IOrderNotifcation) =>
-          !item.isRead && item.userTo === authUser?.username
+        (item: IEnrolmentNotifcation) =>
+          !item.isRead && item.userTo === authUser?.username,
       );
       dispatch(updateNotification({ hasUnreadNotification: list.length > 0 }));
     }
@@ -169,7 +169,7 @@ const HomeHeader: FC<IHomeHeaderProps> = ({
       }
     });
 
-    socket.on("order notification", (_, data: IOrderNotifcation) => {
+    socket.on("enrolment notification", (_, data: IEnrolmentNotifcation) => {
       // only for receiver
       if (data.userTo === `${authUser.username}` && !data.isRead) {
         dispatch(updateNotification({ hasUnreadNotification: true }));
@@ -227,7 +227,7 @@ const HomeHeader: FC<IHomeHeaderProps> = ({
                       }}
                       className="relative z-10 flex cursor-pointer justify-center self-center text-2xl font-semibold text-black lg:text-3xl"
                     >
-                      Jobber
+                      MicroGrade
                     </Link>
                     <HeaderSearchInput />
                   </div>
@@ -308,7 +308,7 @@ const HomeHeader: FC<IHomeHeaderProps> = ({
                         className="px-3"
                         label={
                           <>
-                            <span>Orders</span>
+                            <span>Enrolments</span>
                           </>
                         }
                       />
@@ -323,7 +323,7 @@ const HomeHeader: FC<IHomeHeaderProps> = ({
                         leaveTo="opacity-0 translate-y-1"
                       >
                         <div className="absolute right-0 mt-5 w-96">
-                          <OrderDropdown
+                          <EnrolmentDropdown
                             student={student}
                             setIsOrderDropdownOpen={setIsOrderDropdownOpen}
                           />
@@ -333,10 +333,10 @@ const HomeHeader: FC<IHomeHeaderProps> = ({
                     {student && !student.isInstructor && (
                       <li className="relative flex items-center">
                         <Link
-                          to="/seller_onboarding"
+                          to="/instructor_onboarding"
                           className="relative ml-auto flex h-9 items-center justify-center rounded-full bg-sky-500 text-white font-bold sm:px-6 hover:bg-sky-400"
                         >
-                          <span>Become a Seller</span>
+                          <span>Become an Instructor</span>
                         </Link>
                       </li>
                     )}

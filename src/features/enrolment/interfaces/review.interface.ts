@@ -21,7 +21,7 @@ export interface IReviewDocument {
   review: string;
   reviewerImage: string;
   rating: number;
-  orderId: string;
+  enrolmentId: string;
   createdAt: Date | string;
   reviewerUsername: string;
   country: string;

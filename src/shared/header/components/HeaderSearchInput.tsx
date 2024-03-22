@@ -13,7 +13,7 @@ const HeaderSearchInput: FC = (): ReactElement => {
   const navigate: NavigateFunction = useNavigate();
 
   const navigateToSearchPage = (): void => {
-    const url = `/search/gigs?${createSearchParams({
+    const url = `/search/courses?${createSearchParams({
       query: searchTerm.trim(),
     })}`;
     navigate(url);

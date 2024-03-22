@@ -61,7 +61,7 @@ const EditCourse: FC = (): ReactElement => {
   const [courseInfo, setCourseInfo] =
     useState<ICreateCourse>(defaultCourseInfo);
   const [subCategory, setSubCategory] = useState<string[]>(
-    state?.subCategories
+    state?.subCategories,
   );
   const [subCategoryInput, setSubCategoryInput] = useState<string>("");
   const [tags, setTags] = useState<string[]>(state?.tags);
@@ -143,8 +143,9 @@ const EditCourse: FC = (): ReactElement => {
         const title: string = replaceSpacesWithDash(course.title);
         showSuccessToast("Updated course successfully.");
         navigate(
-          `/course/${lowerCase(`${authUser.username}`)}/${title}/${response
-            ?.course?.instructorId}/${response?.course?.id}/view`
+          `/course/${lowerCase(`${authUser.username}`)}/${title}/${
+            response?.course?.instructorId
+          }/${response?.course?.id}/view`,
         );
       }
     } catch (error) {
@@ -155,8 +156,8 @@ const EditCourse: FC = (): ReactElement => {
   const onCancelEdit = (): void => {
     navigate(
       `/instructor_profile/${lowerCase(
-        `${authUser.username}/${state.instructorId}/edit`
-      )}`
+        `${authUser.username}/${state.instructorId}/edit`,
+      )}`,
     );
   };
 
@@ -172,13 +173,13 @@ const EditCourse: FC = (): ReactElement => {
         />
       )}
       <div className="relative w-screen">
-        <Breadcrumb breadCrumbItems={["Seller", "Edit course"]} />
+        <Breadcrumb breadCrumbItems={["Instructor", "Edit course"]} />
         <div className="container relative mx-auto my-5 px-2 pb-12 md:px-0">
           {isLoading && <CircularPageLoader />}
           <div className="border-grey left-0 top-0 z-10 mt-4 block rounded border bg-white p-6">
             <div className="mb-6 grid md:grid-cols-5">
               <div className="pb-2 text-base font-medium">
-                Gig title
+                Course title
                 <sup className="top-[-0.3em] text-base text-red-500">*</sup>
               </div>
               <div className="col-span-4 md:w-11/12 lg:w-8/12">
@@ -190,12 +191,12 @@ const EditCourse: FC = (): ReactElement => {
                   placeholder="I will build something I'm good at."
                   maxLength={80}
                   onChange={(event: ChangeEvent) => {
-                    const gigTitleValue: string = (
+                    const courseTitleValue: string = (
                       event.target as HTMLInputElement
                     ).value;
-                    setCourseInfo({ ...courseInfo, title: gigTitleValue });
+                    setCourseInfo({ ...courseInfo, title: courseTitleValue });
                     const counter: number =
-                      COURSE_MAX_LENGTH.courseTitle - gigTitleValue.length;
+                      COURSE_MAX_LENGTH.courseTitle - courseTitleValue.length;
                     setAllowedCourseItemLength({
                       ...allowedCourseItemLength,
                       courseTitle: `${counter}/80`,
@@ -298,7 +299,7 @@ const EditCourse: FC = (): ReactElement => {
                       ) {
                         reactQuillEditor.deleteText(
                           COURSE_MAX_LENGTH.fullDescription,
-                          reactQuillEditor.getLength()
+                          reactQuillEditor.getLength(),
                         );
                       }
                     });
@@ -307,7 +308,7 @@ const EditCourse: FC = (): ReactElement => {
                     event: string,
                     _,
                     __,
-                    editor: UnprivilegedEditor
+                    editor: UnprivilegedEditor,
                   ) => {
                     setCourseInfo({ ...courseInfo, description: event });
                     const counter: number =
@@ -395,7 +396,7 @@ const EditCourse: FC = (): ReactElement => {
             </div>
             <div className="mb-12 grid md:grid-cols-5">
               <div className="pb-2 text-base font-medium">
-                Expected delivery
+                Expected Duration
                 <sup className="top-[-0.3em] text-base text-red-500">*</sup>
               </div>
               <div className="relative col-span-4 md:w-11/12 lg:w-8/12">
@@ -465,7 +466,7 @@ const EditCourse: FC = (): ReactElement => {
                 <Button
                   disabled={isLoading}
                   className="rounded bg-sky-500 px-8 py-3 text-center text-sm font-bold text-white hover:bg-sky-400 focus:outline-none md:py-3 md:text-base"
-                  label="Edit Gig"
+                  label="Edit Course"
                   onClick={onEditCourse}
                 />
                 <Button
@@ -475,11 +476,11 @@ const EditCourse: FC = (): ReactElement => {
                   onClick={() => {
                     const isEqual: boolean = equal(
                       courseInfo,
-                      courseInfoRef.current
+                      courseInfoRef.current,
                     );
                     if (!isEqual) {
                       setApprovalModalContent({
-                        header: "Cancel Gig Edit",
+                        header: "Cancel Course Edit",
                         body: "Are you sure you want to cancel?",
                         btnText: "Yes, Cancel",
                         btnColor: "bg-red-500 hover:bg-red-400",

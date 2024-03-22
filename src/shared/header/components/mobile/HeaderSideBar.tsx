@@ -79,12 +79,12 @@ const HeaderSideBar: FC<IHeaderSideBarProps> = ({
                   ...item,
                   login: false,
                 }));
-                saveToLocalStorage("becomeASeller", JSON.stringify(true));
+                saveToLocalStorage("becomeAInstructor", JSON.stringify(true));
               }
             }}
             className="cursor-pointer text-base font-medium text-gray-400"
           >
-            Become a Seller
+            Become a Instructor
           </div>
           <div
             onClick={(event: MouseEvent) => {

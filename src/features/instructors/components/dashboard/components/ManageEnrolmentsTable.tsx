@@ -1,9 +1,9 @@
 import { FC, ReactElement, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import {
-  IOrderDocument,
-  IOrderMessage,
-  IOrderTableProps,
+  IEnrolmentDocument,
+  IEnrolmentMessage,
+  IEnrolmentTableProps,
 } from "src/features/enrolment/interfaces/enrolment.interface";
 import { useCancelEnrolmentMutation } from "src/features/enrolment/services/enrolment.service";
 import Button from "src/shared/Button/Button";
@@ -19,21 +19,21 @@ import {
 import { useAppDispatch } from "src/store/store";
 import { v4 as uuidv4 } from "uuid";
 
-const ManageOrdersTable: FC<IOrderTableProps> = ({
+const ManageEnrolmentsTable: FC<IEnrolmentTableProps> = ({
   type,
-  orders,
-  orderTypes,
+  enrolments,
+  enrolmentTypes,
 }): ReactElement => {
   const dispatch = useAppDispatch();
   const [approvalModalContent, setApprovalModalContent] =
     useState<IApprovalModalContent>();
   const [showCancelModal, setShowCancelModal] = useState<boolean>(false);
-  const selectedOrder = useRef<IOrderDocument>();
+  const selectedOrder = useRef<IEnrolmentDocument>();
   const [cancelOrder] = useCancelEnrolmentMutation();
 
   const onCancelOrder = async (): Promise<void> => {
     try {
-      const orderData: IOrderMessage = {
+      const enrolmentData: IEnrolmentMessage = {
         instructorId: `${selectedOrder.current?.instructorId}`,
         studentId: `${selectedOrder.current?.studentId}`,
         enrolledCourses: selectedOrder.current?.courseId,
@@ -41,12 +41,12 @@ const ManageOrdersTable: FC<IOrderTableProps> = ({
       setShowCancelModal(false);
       await cancelOrder({
         paymentIntentId: `${selectedOrder.current?.paymentIntent}`,
-        orderId: `${selectedOrder.current?.orderId}`,
-        body: orderData,
+        enrolmentId: `${selectedOrder.current?.enrolmentId}`,
+        body: enrolmentData,
       });
-      showSuccessToast("Order cancelled successfully.");
+      showSuccessToast("Enrolment cancelled successfully.");
     } catch (error) {
-      showErrorToast("Error cancelling order. Try again.");
+      showErrorToast("Error cancelling Enrolment. Try again.");
     }
   };
 
@@ -62,26 +62,26 @@ const ManageOrdersTable: FC<IOrderTableProps> = ({
       <div className="flex flex-col">
         <div className="border-grey border border-b-0 px-3 py-3">
           <div className="text-xs font-bold uppercase sm:text-sm md:text-base">
-            {type} orders{" "}
+            {type} enrolments{" "}
           </div>
         </div>
         <table className="border-grey flex-no-wrap flex w-full table-auto flex-row overflow-hidden border text-sm text-gray-500 sm:inline-table">
-          {orderTypes > 0 ? (
+          {enrolmentTypes > 0 ? (
             <>
               <thead className="border-grey border-b text-xs uppercase text-gray-700 sm:[&>*:not(:first-child)]:hidden">
-                {orders.map(() => (
+                {enrolments.map(() => (
                   <tr
                     key={uuidv4()}
                     className="mb-1 flex flex-col flex-nowrap bg-sky-500 text-white sm:mb-0 sm:table-row md:table-row lg:bg-transparent lg:text-black"
                   >
                     <th className="p-3 text-center w-auto"></th>
-                    <th className="p-3 text-left w-auto">Buyer</th>
-                    <th className="p-3 text-left">Gig</th>
+                    <th className="p-3 text-left w-auto">Student</th>
+                    <th className="p-3 text-left">Course</th>
                     <th className="p-3 text-center">
                       {type === "cancelled" ? "Cancelled On" : "Due On"}
                     </th>
                     {type === "completed" && (
-                      <th className="p-3 text-center">Delivered At</th>
+                      <th className="p-3 text-center">Start date At</th>
                     )}
                     <th className="p-3 text-center">Total</th>
                     <th className="p-3 text-center">Status</th>
@@ -92,7 +92,7 @@ const ManageOrdersTable: FC<IOrderTableProps> = ({
                 ))}
               </thead>
               <tbody className="flex-1 sm:flex-none">
-                {orders.map((order: IOrderDocument) => (
+                {enrolments.map((order: IEnrolmentDocument) => (
                   <tr
                     key={uuidv4()}
                     className="bg-white border-b border-grey flex flex-col flex-nowrap sm:table-row mb-2 sm:mb-0 "
@@ -113,7 +113,7 @@ const ManageOrdersTable: FC<IOrderTableProps> = ({
                     <td className="p-3 text-left lg:text-center w-[300px]">
                       <div className="grid">
                         <Link
-                          to={`/orders/${order.orderId}/activities`}
+                          to={`/enrolments/${order.enrolmentId}/activities`}
                           onClick={() => dispatch(updateHeader("home"))}
                           className="truncate text-sm font-normal hover:text-sky-500"
                         >
@@ -130,7 +130,7 @@ const ManageOrdersTable: FC<IOrderTableProps> = ({
                       order.events.sucessfulEnrolment && (
                         <td className="p-3 text-left lg:text-center">
                           {TimeAgo.dayMonthYear(
-                            `${order.events.sucessfulEnrolment}`
+                            `${order.events.sucessfulEnrolment}`,
                           )}
                         </td>
                       )}
@@ -140,7 +140,7 @@ const ManageOrdersTable: FC<IOrderTableProps> = ({
                     <td className="px-3 py-1 lg:p-3 text-left lg:text-center">
                       <span
                         className={`rounded bg-transparent text-black p-0 text-xs font-bold uppercase sm:text-white sm:px-[5px] sm:py-[4px] status ${lowerCase(
-                          order.status.replace(/ /g, "")
+                          order.status.replace(/ /g, ""),
                         )}`}
                       >
                         {order.status}
@@ -153,8 +153,8 @@ const ManageOrdersTable: FC<IOrderTableProps> = ({
                           label="Cancel Order"
                           onClick={() => {
                             setApprovalModalContent({
-                              header: "Order Cancellation",
-                              body: "Are you sure you want to cancel this order?",
+                              header: "Enrolment Cancellation",
+                              body: "Are you sure you want to cancel this enrolment?",
                               btnText: "Yes, Cancel",
                               btnColor: "bg-red-500 hover:bg-red-400",
                             });
@@ -172,7 +172,7 @@ const ManageOrdersTable: FC<IOrderTableProps> = ({
             <tbody>
               <tr>
                 <td className="w-full px-4 py-2 text-sm">
-                  No {type} orders to show.
+                  No {type} enrolments to show.
                 </td>
               </tr>
             </tbody>
@@ -183,4 +183,4 @@ const ManageOrdersTable: FC<IOrderTableProps> = ({
   );
 };
 
-export default ManageOrdersTable;
+export default ManageEnrolmentsTable;

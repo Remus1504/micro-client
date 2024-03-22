@@ -1,6 +1,6 @@
-import { FC, ReactElement } from 'react';
+import { FC, ReactElement } from "react";
 
-import { ITextInputProps } from '../shared.interface';
+import { ITextInputProps } from "../shared.interface";
 
 const TextAreaInput: FC<ITextInputProps> = (props): ReactElement => {
   return (

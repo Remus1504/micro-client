@@ -1,5 +1,5 @@
-import { SerializedError } from "@reduxjs/toolkit";
-import { FetchBaseQueryError } from "@reduxjs/toolkit/dist/query";
+import { SerializedError } from '@reduxjs/toolkit';
+import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query';
 import {
   ChangeEvent,
   CSSProperties,
@@ -7,34 +7,34 @@ import {
   KeyboardEvent,
   ReactNode,
   SetStateAction,
-} from "react";
+} from 'react';
 import {
   IAuthDocument,
   IAuthResponse,
   IResetPassword,
   ISignInPayload,
   ISignUpPayload,
-} from "src/features/auth/interfaces/authenticationinterface";
-import { StudentDocument } from "src/features/student/interfaces/student.interface";
+} from 'src/features/auth/interfaces/authenticationinterface';
+import { StudentDocument } from 'src/features/student/interfaces/student.interface';
 import {
   IConversationDocument,
   IMessageDocument,
-} from "src/features/chat/interfaces/chat.interface";
+} from 'src/features/chat/interfaces/chat.interface';
 import {
   ICreateCourse,
   InstructorCourse,
-} from "src/features/courses/interfaces/course.interface";
+} from 'src/features/courses/interfaces/course.interface';
 import {
-  IOrderDocument,
-  IOrderNotifcation,
-} from "src/features/enrolment/interfaces/enrolment.interface";
-import { IReviewDocument } from "src/features/enrolment/interfaces/review.interface";
+  IEnrolmentDocument,
+  IEnrolmentNotifcation,
+} from 'src/features/enrolment/interfaces/enrolment.interface';
+import { IReviewDocument } from 'src/features/enrolment/interfaces/review.interface';
 import {
   IEducation,
   IExperience,
   ILanguage,
   InstructorDocument,
-} from "src/features/instructors/interfaces/instructor.interface";
+} from 'src/features/instructors/interfaces/instructor.interface';
 
 export type validationErrorsType =
   | ISignInPayload
@@ -68,11 +68,11 @@ export interface IResponse {
   conversationId?: string;
   clientSecret?: string;
   paymentIntentId?: string;
-  order?: IOrderDocument;
-  orders?: IOrderDocument[];
+  enrolment?: IEnrolmentDocument;
+  enrolments?: IEnrolmentDocument[];
   review?: IReviewDocument;
   reviews?: IReviewDocument[];
-  notifications?: IOrderNotifcation[];
+  notifications?: IEnrolmentNotifcation[];
 }
 
 export interface IBannerProps {
@@ -145,7 +145,7 @@ export interface ITextInputProps {
 
 export interface IButtonProps {
   label?: string | ReactNode;
-  type?: "button" | "submit" | "reset" | undefined;
+  type?: 'button' | 'submit' | 'reset' | undefined;
   id?: string;
   className?: string;
   role?: string;

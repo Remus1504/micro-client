@@ -16,7 +16,7 @@ const CourseRelatedTags: FC = (): ReactElement => {
         {course?.tags.map((tag: string) => (
           <Link
             key={uuidv4()}
-            to={`/search/gigs?${createSearchParams({
+            to={`/search/courses?${createSearchParams({
               query: `${replaceSpacesWithDash(`${tag}`.trim())}`,
             })}`}
           >

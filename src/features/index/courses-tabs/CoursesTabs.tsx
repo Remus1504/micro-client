@@ -13,7 +13,7 @@ import { v4 as uuidv4 } from "uuid";
 const CourseTabs: FC = (): ReactElement => {
   const [activeTab, setActiveTab] = useState<string>("Graphics & Design");
   const queryType = `query=${replaceAmpersandAndDashWithSpace(
-    `${lowerCase(activeTab)}`
+    `${lowerCase(activeTab)}`,
   )}`;
   const { data, isSuccess } = useGetAuthCoursesByCategoryQuery({
     query: `${queryType}`,
@@ -34,8 +34,8 @@ const CourseTabs: FC = (): ReactElement => {
             A broad selection of services
           </h2>
           <h4>
-            Choose from a broad selection of services from expert freelancers
-            for your next project.
+            Choose from a broad selection of services from expert teachers for
+            your next project.
           </h4>
         </div>
         <div className="mt-6">

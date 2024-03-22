@@ -1,8 +1,8 @@
 import { FC, ReactElement, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { IOrderDocument } from "src/features/enrolment/interfaces/enrolment.interface";
+import { IEnrolmentDocument } from "src/features/enrolment/interfaces/enrolment.interface";
 import { useGetEnrolmentByStudentIdQuery } from "src/features/enrolment/services/enrolment.service";
-import { orderTypes, shortenLargeNumbers } from "src/shared/utils/utils";
+import { enrolmentTypes, shortenLargeNumbers } from "src/shared/utils/utils";
 import { socket, socketService } from "src/sockets/socket.service";
 
 import StudentTable from "./StudentTable";
@@ -19,9 +19,9 @@ const StudentDashboard: FC = (): ReactElement => {
   const [type, setType] = useState<string>(STUDENT_COURSE_STATUS.ACTIVE);
   const { studentId } = useParams<string>();
   const { data, isSuccess } = useGetEnrolmentByStudentIdQuery(`${studentId}`);
-  let orders: IOrderDocument[] = [];
+  let enrolments: IEnrolmentDocument[] = [];
   if (isSuccess) {
-    orders = data.orders as IOrderDocument[];
+    enrolments = data.enrolments as IEnrolmentDocument[];
   }
 
   useEffect(() => {
@@ -33,7 +33,7 @@ const StudentDashboard: FC = (): ReactElement => {
     <div className="container mx-auto mt-8 px-6 md:px-12 lg:px-6">
       <div className="flex flex-col flex-wrap">
         <div className="mb-8 px-4 text-xl font-semibold text-black md:px-0 md:text-2xl lg:text-4xl">
-          Manage Orders
+          Manage Enrolments
         </div>
         <div className="p-0">
           <ul className="flex w-full cursor-pointer list-none flex-col flex-wrap rounded-[2px] sm:flex-none sm:flex-row">
@@ -50,10 +50,14 @@ const StudentDashboard: FC = (): ReactElement => {
                 }`}
               >
                 Active
-                {orderTypes(STUDENT_COURSE_STATUS.IN_PROGRESS, orders) > 0 && (
+                {enrolmentTypes(STUDENT_COURSE_STATUS.IN_PROGRESS, enrolments) >
+                  0 && (
                   <span className="ml-1 rounded-[5px] bg-sky-500 px-[5px] py-[1px] text-xs font-medium text-white">
                     {shortenLargeNumbers(
-                      orderTypes(STUDENT_COURSE_STATUS.IN_PROGRESS, orders)
+                      enrolmentTypes(
+                        STUDENT_COURSE_STATUS.IN_PROGRESS,
+                        enrolments,
+                      ),
                     )}
                   </span>
                 )}
@@ -72,10 +76,14 @@ const StudentDashboard: FC = (): ReactElement => {
                 }`}
               >
                 Completed
-                {orderTypes(STUDENT_COURSE_STATUS.COMPLETED, orders) > 0 && (
+                {enrolmentTypes(STUDENT_COURSE_STATUS.COMPLETED, enrolments) >
+                  0 && (
                   <span className="ml-1 rounded-[5px] bg-sky-500 px-[5px] py-[1px] text-xs font-medium text-white">
                     {shortenLargeNumbers(
-                      orderTypes(STUDENT_COURSE_STATUS.COMPLETED, orders)
+                      enrolmentTypes(
+                        STUDENT_COURSE_STATUS.COMPLETED,
+                        enrolments,
+                      ),
                     )}
                   </span>
                 )}
@@ -94,10 +102,14 @@ const StudentDashboard: FC = (): ReactElement => {
                 }`}
               >
                 Cancelled
-                {orderTypes(STUDENT_COURSE_STATUS.CANCELLED, orders) > 0 && (
+                {enrolmentTypes(STUDENT_COURSE_STATUS.CANCELLED, enrolments) >
+                  0 && (
                   <span className="ml-1 rounded-[5px] bg-sky-500 px-[5px] py-[1px] text-xs font-medium text-white">
                     {shortenLargeNumbers(
-                      orderTypes(STUDENT_COURSE_STATUS.CANCELLED, orders)
+                      enrolmentTypes(
+                        STUDENT_COURSE_STATUS.CANCELLED,
+                        enrolments,
+                      ),
                     )}
                   </span>
                 )}
@@ -109,22 +121,31 @@ const StudentDashboard: FC = (): ReactElement => {
         {type === STUDENT_COURSE_STATUS.ACTIVE && (
           <StudentTable
             type="active"
-            orders={orders}
-            orderTypes={orderTypes(STUDENT_COURSE_STATUS.IN_PROGRESS, orders)}
+            enrolments={enrolments}
+            enrolmentTypes={enrolmentTypes(
+              STUDENT_COURSE_STATUS.IN_PROGRESS,
+              enrolments,
+            )}
           />
         )}
         {type === STUDENT_COURSE_STATUS.COMPLETED && (
           <StudentTable
             type="completed"
-            orders={orders}
-            orderTypes={orderTypes(STUDENT_COURSE_STATUS.COMPLETED, orders)}
+            enrolments={enrolments}
+            enrolmentTypes={enrolmentTypes(
+              STUDENT_COURSE_STATUS.COMPLETED,
+              enrolments,
+            )}
           />
         )}
         {type === STUDENT_COURSE_STATUS.CANCELLED && (
           <StudentTable
             type="cancelled"
-            orders={orders}
-            orderTypes={orderTypes(STUDENT_COURSE_STATUS.CANCELLED, orders)}
+            enrolments={enrolments}
+            enrolmentTypes={enrolmentTypes(
+              STUDENT_COURSE_STATUS.CANCELLED,
+              enrolments,
+            )}
           />
         )}
       </div>

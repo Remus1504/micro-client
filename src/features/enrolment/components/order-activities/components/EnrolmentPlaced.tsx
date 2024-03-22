@@ -5,11 +5,26 @@ import {
   FaRegClock,
   FaRegFile,
 } from "react-icons/fa";
-import { OrderContext } from "src/features/enrolment/context/OrderContext";
+import { EnrolmentContext } from "src/features/enrolment/context/EnrolmentContext";
 import { TimeAgo } from "src/shared/utils/time.utils";
 
-const OrderPlaced: FC = (): ReactElement => {
-  const { order, authUser } = useContext(OrderContext);
+const EnrolmentPlaced: FC = (): ReactElement => {
+  const { enrolment, authUser } = useContext(EnrolmentContext);
+  console.log("placeOrder:", enrolment?.events.placeOrder);
+  console.log("requirements:", enrolment?.events.requirements);
+  console.log("enrolmentStarted:", enrolment?.events.enrolmentStarted);
+  console.log("newStartDate:", enrolment?.offer.newStartDate);
+
+  const placeOrderDate = enrolment?.events.placeOrder
+    ? TimeAgo.dayWithTime(`${enrolment?.events.placeOrder}`)
+    : "";
+  const requirementsDate = TimeAgo.dayWithTime(
+    `${enrolment?.events.requirements}`,
+  );
+  const enrolmentStartedDate = TimeAgo.dayWithTime(
+    `${enrolment?.events.enrolmentStarted}`,
+  );
+  const newStartDate = TimeAgo.dayWithTime(`${enrolment?.offer.newStartDate}`);
 
   return (
     <div className="flex rounded-[4px] bg-white px-4 py-3">
@@ -23,19 +38,17 @@ const OrderPlaced: FC = (): ReactElement => {
           <div className="w-full cursor-pointer">
             <div className="border-grey mt-2 flex items-center gap-2 border-b pb-6 text-gray-500">
               <span className="text-base font-bold">
-                {order?.studentUsername === authUser?.username
+                {enrolment?.studentUsername === authUser?.username
                   ? "You"
-                  : order?.studentUsername}{" "}
-                placed the order
+                  : enrolment?.studentUsername}{" "}
+                placed the enrolment
               </span>
-              <p className="text-sm font-normal italic">
-                {TimeAgo.dayWithTime(`${order?.events.placeOrder}`)}
-              </p>
+              <p className="text-sm font-normal italic">{placeOrderDate}</p>
             </div>
           </div>
         </div>
 
-        {order?.requirements !== "" && (
+        {enrolment?.requirements !== "" && (
           <div className="flex gap-4 pt-4">
             <div>
               <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#cafcfc]">
@@ -45,21 +58,19 @@ const OrderPlaced: FC = (): ReactElement => {
             <div className="w-full cursor-pointer border-grey border-b pb-6">
               <div className="mt-2 flex items-center gap-2 text-gray-500">
                 <span className="text-base font-bold">
-                  {order?.studentUsername === authUser?.username
+                  {enrolment?.studentUsername === authUser?.username
                     ? "You"
-                    : order?.studentUsername}{" "}
+                    : enrolment?.studentUsername}{" "}
                   submiited the requirements
                 </span>
-                <p className="text-sm font-normal italic">
-                  {TimeAgo.dayWithTime(`${order?.events.requirements}`)}
-                </p>
+                <p className="text-sm font-normal italic">{requirementsDate}</p>
               </div>
               <div className="mt-4 flex w-full rounded">
                 <div className="mt-2">
                   <div className="px-4s pb-2 text-left text-sm text-gray-500">
                     <div className="flex flex-col">
                       <p className="col-span-2 text-sm">
-                        {order?.requirements}
+                        {enrolment?.requirements}
                       </p>
                     </div>
                   </div>
@@ -77,11 +88,13 @@ const OrderPlaced: FC = (): ReactElement => {
           <div className="w-full cursor-pointer">
             <div className="border-grey mt-2 flex items-center gap-2 border-b pb-6 text-gray-500">
               <span className="text-base font-bold">
-                {order?.studentUsername === authUser?.username ? "Your" : "The"}{" "}
-                order started
+                {enrolment?.studentUsername === authUser?.username
+                  ? "Your"
+                  : "The"}{" "}
+                enrolment started
               </span>
               <p className="text-sm font-normal italic">
-                {TimeAgo.dayWithTime(`${order?.events.orderStarted}`)}
+                {enrolmentStartedDate}
               </p>
             </div>
           </div>
@@ -97,9 +110,7 @@ const OrderPlaced: FC = (): ReactElement => {
               <span className="text-base font-bold">
                 Your enrolment date was updated to
               </span>
-              <p className="text-sm font-normal italic">
-                {TimeAgo.dayWithTime(`${order?.offer.newStartDate}`)}
-              </p>
+              <p className="text-sm font-normal italic">{newStartDate}</p>
             </div>
           </div>
         </div>
@@ -108,4 +119,4 @@ const OrderPlaced: FC = (): ReactElement => {
   );
 };
 
-export default OrderPlaced;
+export default EnrolmentPlaced;

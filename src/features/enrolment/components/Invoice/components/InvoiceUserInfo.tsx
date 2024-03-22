@@ -1,6 +1,6 @@
 import { Link, StyleSheet, Text, View } from "@react-pdf/renderer";
 import { FC, ReactElement, useContext } from "react";
-import { OrderContext } from "src/features/enrolment/context/OrderContext";
+import { EnrolmentContext } from "src/features/enrolment/context/EnrolmentContext";
 import { TimeAgo } from "src/shared/utils/time.utils";
 
 const CLIENT_ENDPOINT = import.meta.env.VITE_CLIENT_ENDPOINT;
@@ -20,24 +20,24 @@ const styles = StyleSheet.create({
 });
 
 const InvoiceUserInfo: FC = (): ReactElement => {
-  const { orderInvoice } = useContext(OrderContext);
+  const { enrolmentInvoice } = useContext(EnrolmentContext);
 
   return (
     <>
-      {orderInvoice && Object.keys(orderInvoice).length && (
+      {enrolmentInvoice && Object.keys(enrolmentInvoice).length && (
         <>
           <View style={styles.titleContainer}>
             <View style={styles.spaceBetween}>
               <View style={{ maxWidth: 200 }}>
                 <Text style={styles.title}>To </Text>
                 <Text style={styles.subTitle}>
-                  {orderInvoice.studentUsername}
+                  {enrolmentInvoice.studentUsername}
                 </Text>
               </View>
               <View style={{ maxWidth: 200 }}>
                 <Text style={styles.title}>Date issued</Text>
                 <Text style={styles.subTitle}>
-                  {TimeAgo.dayMonthYear(`${orderInvoice.date}`)}
+                  {TimeAgo.dayMonthYear(`${enrolmentInvoice.date}`)}
                 </Text>
               </View>
             </View>
@@ -48,10 +48,10 @@ const InvoiceUserInfo: FC = (): ReactElement => {
               <View style={{ maxWidth: 200 }}>
                 <Text style={styles.title}>Order number</Text>
                 <Link
-                  src={`${`${CLIENT_ENDPOINT}/orders/${orderInvoice.orderId}/activities`}`}
+                  src={`${`${CLIENT_ENDPOINT}/orders/${enrolmentInvoice.enrolmentId}/activities`}`}
                   style={styles.link}
                 >
-                  {orderInvoice.orderId}
+                  {enrolmentInvoice.enrolmentId}
                 </Link>
               </View>
             </View>

@@ -5,7 +5,7 @@ import {
   useGetCoursesByInstructorIdQuery,
   useGetInstructorPausedCoursesQuery,
 } from "src/features/courses/services/course.service";
-import { IOrderDocument } from "src/features/enrolment/interfaces/enrolment.interface";
+import { IEnrolmentDocument } from "src/features/enrolment/interfaces/enrolment.interface";
 import { useGetEnrolmentByInstructorIdQuery } from "src/features/enrolment/services/enrolment.service";
 import DashboardHeader from "src/shared/header/components/DashboardHeader";
 
@@ -25,7 +25,7 @@ const Instructor: FC = (): ReactElement => {
     useGetEnrolmentByInstructorIdQuery(`${instructorId}`);
   let courses: InstructorCourse[] = [];
   let pausedCourses: InstructorCourse[] = [];
-  let orders: IOrderDocument[] = [];
+  let enrolments: IEnrolmentDocument[] = [];
   let instructor: InstructorDocument | undefined = undefined;
 
   if (isSuccess) {
@@ -41,14 +41,14 @@ const Instructor: FC = (): ReactElement => {
   }
 
   if (isInstructorOrderSucess) {
-    orders = instructorOrders?.orders as IOrderDocument[];
+    enrolments = instructorOrders?.enrolments as IEnrolmentDocument[];
   }
 
   return (
     <div className="relative w-screen">
       <DashboardHeader />
       <div className="m-auto px-6 w-screen xl:container md:px-12 lg:px-6 relative min-h-screen">
-        <Outlet context={{ instructor, courses, pausedCourses, orders }} />
+        <Outlet context={{ instructor, courses, pausedCourses, enrolments }} />
       </div>
     </div>
   );

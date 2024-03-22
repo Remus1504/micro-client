@@ -1,30 +1,30 @@
 import { FC, ReactElement } from "react";
 import { Link } from "react-router-dom";
 import {
-  IOrderDocument,
-  IOrderTableProps,
+  IEnrolmentDocument,
+  IEnrolmentTableProps,
 } from "src/features/enrolment/interfaces/enrolment.interface";
 import { TimeAgo } from "src/shared/utils/time.utils";
 import { lowerCase } from "src/shared/utils/utils";
 import { v4 as uuidv4 } from "uuid";
 
-const studentTable: FC<IOrderTableProps> = ({
+const studentTable: FC<IEnrolmentTableProps> = ({
   type,
-  orders,
-  orderTypes,
+  enrolments,
+  enrolmentTypes,
 }): ReactElement => {
   return (
     <div className="flex flex-col">
       <div className="border-grey border border-b-0 px-3 py-3">
         <div className="text-xs font-bold uppercase sm:text-sm md:text-base">
-          {type} orders{" "}
+          {type} enrolments{" "}
         </div>
       </div>
       <table className="border-grey flex-no-wrap flex w-full table-auto flex-row overflow-hidden border text-sm text-gray-500 sm:inline-table">
-        {orderTypes > 0 ? (
+        {enrolmentTypes > 0 ? (
           <>
             <thead className="border-grey border-b text-xs uppercase text-gray-700 sm:[&>*:not(:first-child)]:hidden">
-              {orders.map(() => (
+              {enrolments.map(() => (
                 <tr
                   key={uuidv4()}
                   className="mb-1 flex flex-col flex-nowrap bg-sky-500 text-white sm:mb-0 sm:table-row md:table-row lg:bg-transparent lg:text-black"
@@ -45,7 +45,7 @@ const studentTable: FC<IOrderTableProps> = ({
               ))}
             </thead>
             <tbody className="flex-1 sm:flex-none">
-              {orders.map((order: IOrderDocument) => (
+              {enrolments.map((enrolment: IEnrolmentDocument) => (
                 <tr
                   key={uuidv4()}
                   className="border-grey mb-2 flex flex-col flex-nowrap border-b bg-white sm:mb-0 sm:table-row "
@@ -53,38 +53,38 @@ const studentTable: FC<IOrderTableProps> = ({
                   <td className="px-3 py-3 lg:flex lg:justify-center">
                     <img
                       className="h-6 w-10 object-cover lg:h-8 lg:w-11"
-                      src={order.courseCoverImage}
-                      alt="Gig cover image"
+                      src={enrolment.courseCoverImage}
+                      alt="Course cover image"
                     />
                   </td>
                   <td className="p-3 text-left">
                     <div className="grid">
                       <Link
-                        to={`/orders/${order.orderId}/activities`}
+                        to={`/enrolments/${enrolment.enrolmentId}/activities`}
                         className="truncate text-sm font-normal hover:text-sky-500"
                       >
-                        {order.courseBasicTitle}
+                        {enrolment.courseBasicTitle}
                       </Link>
                     </div>
                   </td>
                   <td className="p-3 text-left lg:text-center">
-                    {TimeAgo.dayMonthYear(`${order.dateEnrolled}`)}
+                    {TimeAgo.dayMonthYear(`${enrolment.dateEnrolled}`)}
                   </td>
                   <td className="p-3 text-left lg:text-center">
                     {type === "cancelled"
-                      ? TimeAgo.dayMonthYear(`${order.approvedAt}`)
-                      : TimeAgo.dayMonthYear(`${order.offer.newStartDate}`)}
+                      ? TimeAgo.dayMonthYear(`${enrolment.approvedAt}`)
+                      : TimeAgo.dayMonthYear(`${enrolment.offer.newStartDate}`)}
                   </td>
                   <td className="p-3 text-left lg:text-center">
-                    ${order.price}
+                    ${enrolment.price}
                   </td>
                   <td className="px-3 py-1 text-left lg:p-3 lg:text-center">
                     <span
                       className={`status rounded bg-transparent p-0 text-xs font-bold uppercase text-black sm:px-[5px] sm:py-[4px] sm:text-white ${lowerCase(
-                        order.status.replace(/ /g, "")
+                        enrolment.status.replace(/ /g, ""),
                       )}`}
                     >
-                      {order.status}
+                      {enrolment.status}
                     </span>
                   </td>
                 </tr>
@@ -95,7 +95,7 @@ const studentTable: FC<IOrderTableProps> = ({
           <tbody>
             <tr>
               <td className="w-full px-4 py-2 text-sm">
-                No {type} orders to show.
+                No {type} enrolments to show.
               </td>
             </tr>
           </tbody>

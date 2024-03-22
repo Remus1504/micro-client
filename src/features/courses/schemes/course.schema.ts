@@ -19,11 +19,11 @@ const courseInfoSchema: ObjectSchema<ICreateCourse | any> = object({
     coverImage: "Course cover image is a required field",
   }),
   expectedDuration: string()
-    .notOneOf(["Expected delivery"], {
-      expectedDuration: "Select expected delivery",
+    .notOneOf(["Expected duration"], {
+      expectedDuration: "Select expected duration",
     })
     .required({
-      expectedDuration: "Course expected delivery is a required field",
+      expectedDuration: "Course expected duration is a required field",
     }),
   basicDescription: string()
     .max(100, {

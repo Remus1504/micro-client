@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from "@react-pdf/renderer";
 import { FC, ReactElement, useContext } from "react";
-import { OrderContext } from "src/features/enrolment/context/OrderContext";
-import { IOrderInvoiceService } from "src/features/enrolment/interfaces/enrolment.interface";
+import { EnrolmentContext } from "src/features/enrolment/context/EnrolmentContext";
+import { IEnrolmentInvoiceService } from "src/features/enrolment/interfaces/enrolment.interface";
 
 const styles = StyleSheet.create({
   tbody: {
@@ -19,11 +19,11 @@ const styles = StyleSheet.create({
 });
 
 const TableTotal: FC = (): ReactElement => {
-  const { orderInvoice } = useContext(OrderContext);
+  const { enrolmentInvoice } = useContext(EnrolmentContext);
 
   return (
     <>
-      {orderInvoice && Object.keys(orderInvoice).length && (
+      {enrolmentInvoice && Object.keys(enrolmentInvoice).length && (
         <View style={{ width: "100%", flexDirection: "row", marginTop: 10 }}>
           <View style={[styles.tbody, styles.total]}>
             <Text></Text>
@@ -41,11 +41,11 @@ const TableTotal: FC = (): ReactElement => {
           <View style={styles.tbody}>
             <Text>
               $
-              {orderInvoice.orderService
+              {enrolmentInvoice.enrolmentService
                 .reduce(
-                  (sum: number, item: IOrderInvoiceService) =>
+                  (sum: number, item: IEnrolmentInvoiceService) =>
                     sum + item.price * item.quantity,
-                  0
+                  0,
                 )
                 .toFixed(2)}
             </Text>

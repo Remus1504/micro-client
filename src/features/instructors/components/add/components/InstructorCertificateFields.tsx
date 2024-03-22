@@ -38,7 +38,7 @@ const InstructorCertificateFields: FC<ICertificateProps> = ({
 
   const handleCertificateFieldsChange = (
     event: ChangeEvent,
-    index: number
+    index: number,
   ): void => {
     if (certificatesFields && setCertificatesFields) {
       const target: HTMLInputElement = event.target as HTMLInputElement;

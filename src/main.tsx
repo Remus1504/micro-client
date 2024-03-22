@@ -1,14 +1,23 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import App from "./App.tsx";
 import "./index.scss";
 
-import { store } from "./store/store.ts";
+import { init } from "@elastic/apm-rum";
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { Provider } from "react-redux";
 import { Persistor, persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
-import { Provider } from "react-redux";
+
+import App from "./App.tsx";
+import { store } from "./store/store.ts";
 
 const persistor: Persistor = persistStore(store);
+
+init({
+  serviceName: "Micrograde Client App",
+  serverUrl: import.meta.env.VITE_ELASTIC_APM_SERVER,
+  serviceVersion: "0.0.1",
+  active: true,
+});
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -17,5 +26,5 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         <App />
       </PersistGate>
     </Provider>
-  </React.StrictMode>
+  </React.StrictMode>,
 );

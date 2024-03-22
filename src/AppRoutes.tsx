@@ -4,7 +4,7 @@ import { RouteObject, useRoutes } from "react-router-dom";
 import AppPage from "./features/Application";
 import ConfirmEmail from "./features/auth/Components/EmailConfirmation";
 import ResetPassword from "./features/auth/Components/ResetPassword";
-import BuyerDashboard from "./features/student/components/Dashboard";
+import StudentDashboard from "./features/student/components/Dashboard";
 import Chat from "./features/chat/components/Chat";
 import Error from "./features/error/Error";
 import AddCourse from "./features/courses/components/course/AddCourse";
@@ -15,12 +15,12 @@ import Home from "./features/Home/components/HomePage";
 import CourseInfoDisplay from "./features/index/courses-tabs/CourseInfoDisplay";
 import CoursesIndexDisplay from "./features/index/courses-tabs/CoursesIndexDisplay";
 import Checkout from "./features/enrolment/components/Checkout";
-import Order from "./features/enrolment/components/Order";
+import Enrolment from "./features/enrolment/components/Enrolment";
 import Requirement from "./features/enrolment/components/Requirement";
 import ProtectedRoute from "./features/ProtectedRoute";
 import AddInstructor from "./features/instructors/components/add/AddInstructor";
 import ManageEarnings from "./features/instructors/components/dashboard/ManageEarnings";
-import ManageOrders from "./features/instructors/components/dashboard/ManageOrders";
+import ManageEnrolments from "./features/instructors/components/dashboard/ManageEnrolments";
 import Instructor from "./features/instructors/components/dashboard/Instructor";
 import InstructorDashboard from "./features/instructors/components/dashboard/InstructorDashboard";
 import CurrentInstructorProfile from "./features/instructors/components/profile/CurrentInstructorProfile";
@@ -104,12 +104,12 @@ const AppRouter: FC = () => {
       ),
     },
     {
-      path: "/users/:username/:studentId/orders",
+      path: "/users/:username/:studentId/enrolments",
       element: (
         <Suspense>
           <ProtectedRoute>
             <Layout backgroundColor="#ffffff">
-              <BuyerDashboard />
+              <StudentDashboard />
             </Layout>
           </ProtectedRoute>
         </Suspense>
@@ -164,12 +164,12 @@ const AppRouter: FC = () => {
       ),
       children: [
         {
-          path: "insttructor_dashboard",
+          path: "instructor_dashboard",
           element: <InstructorDashboard />,
         },
         {
-          path: "manage_orders",
-          element: <ManageOrders />,
+          path: "manage_enrolments",
+          element: <ManageEnrolments />,
         },
         {
           path: "manage_earnings",
@@ -274,7 +274,7 @@ const AppRouter: FC = () => {
       ),
     },
     {
-      path: "/course/order/requirement/:courseId",
+      path: "/course/enrolment/requirement/:courseId",
       element: (
         <Suspense>
           <ProtectedRoute>
@@ -286,12 +286,12 @@ const AppRouter: FC = () => {
       ),
     },
     {
-      path: "/orders/:orderId/activities",
+      path: "/enrolments/:enrolmentId/activities",
       element: (
         <Suspense>
           <ProtectedRoute>
             <Layout backgroundColor="#f5f5f5">
-              <Order />
+              <Enrolment />
             </Layout>
           </ProtectedRoute>
         </Suspense>

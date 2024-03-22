@@ -2,7 +2,7 @@ import { orderBy } from "lodash";
 import { FC, ReactElement, useEffect, useState } from "react";
 import { FaRegEnvelope, FaRegEnvelopeOpen } from "react-icons/fa";
 import { NavigateFunction, useNavigate } from "react-router-dom";
-import { IOrderNotifcation } from "src/features/enrolment/interfaces/enrolment.interface";
+import { IEnrolmentNotifcation } from "src/features/enrolment/interfaces/enrolment.interface";
 import {
   useGetNotificationsByIdQuery,
   useMarkUnreadNotificationMutation,
@@ -19,16 +19,18 @@ const NotificationDropdown: FC<IHomeHeaderProps> = ({
   setIsNotificationDropdownOpen,
 }): ReactElement => {
   const authUser = useAppSelector((state: IReduxState) => state.authUser);
-  const [notifications, setNotifications] = useState<IOrderNotifcation[]>([]);
+  const [notifications, setNotifications] = useState<IEnrolmentNotifcation[]>(
+    [],
+  );
   const navigate: NavigateFunction = useNavigate();
   const { data, isSuccess } = useGetNotificationsByIdQuery(
     `${authUser.username}`,
-    { refetchOnMountOrArgChange: true }
+    { refetchOnMountOrArgChange: true },
   );
   const [markUnReadNotification] = useMarkUnreadNotificationMutation();
 
   const markNotificationAsRead = async (
-    notificationId: string
+    notificationId: string,
   ): Promise<void> => {
     try {
       await markUnReadNotification(notificationId).unwrap();
@@ -39,11 +41,11 @@ const NotificationDropdown: FC<IHomeHeaderProps> = ({
 
   useEffect(() => {
     if (isSuccess) {
-      const sortedNotifications: IOrderNotifcation[] = orderBy(
+      const sortedNotifications: IEnrolmentNotifcation[] = orderBy(
         data.notifications,
         ["createdAt"],
-        ["desc"]
-      ) as IOrderNotifcation[];
+        ["desc"],
+      ) as IEnrolmentNotifcation[];
       setNotifications(sortedNotifications);
     }
   }, [isSuccess, data?.notifications]);
@@ -55,7 +57,7 @@ const NotificationDropdown: FC<IHomeHeaderProps> = ({
       </div>
       <div className="h-96 overflow-y-scroll">
         {notifications.length > 0 &&
-          notifications.map((data: IOrderNotifcation) => (
+          notifications.map((data: IEnrolmentNotifcation) => (
             <div
               key={uuidv4()}
               className="border-grey max-h-[90px] border-b py-2 text-left hover:bg-gray-50"
@@ -63,7 +65,7 @@ const NotificationDropdown: FC<IHomeHeaderProps> = ({
                 if (setIsNotificationDropdownOpen) {
                   setIsNotificationDropdownOpen(false);
                 }
-                navigate(`/orders/${data.orderId}/activities`);
+                navigate(`/enrolments/${data.enrolmentId}/activities`);
                 markNotificationAsRead(`${data._id}`);
               }}
             >

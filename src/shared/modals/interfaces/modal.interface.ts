@@ -1,8 +1,8 @@
-import { Dispatch, MouseEventHandler, ReactNode, SetStateAction } from "react";
-import { IAuthUser } from "src/features/auth/interfaces/authenticationinterface";
-import { StudentDocument } from "src/features/student/interfaces/student.interface";
-import { IMessageDocument } from "src/features/chat/interfaces/chat.interface";
-import { IOrderDocument } from "src/features/enrolment/interfaces/enrolment.interface";
+import { Dispatch, MouseEventHandler, ReactNode, SetStateAction } from 'react';
+import { IAuthUser } from 'src/features/auth/interfaces/authenticationinterface';
+import { StudentDocument } from 'src/features/student/interfaces/student.interface';
+import { IMessageDocument } from 'src/features/chat/interfaces/chat.interface';
+import { IEnrolmentDocument } from 'src/features/enrolment/interfaces/enrolment.interface';
 
 export interface IModalBgProps {
   children?: ReactNode;
@@ -15,7 +15,7 @@ export interface IModalProps {
   header?: string;
   courseTitle?: string;
   singleMessage?: IMessageDocument;
-  order?: IOrderDocument;
+  enrolment?: IEnrolmentDocument;
   receiver?: StudentDocument;
   authUser?: IAuthUser;
   type?: string;

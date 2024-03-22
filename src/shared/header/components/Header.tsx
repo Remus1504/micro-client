@@ -11,7 +11,7 @@ import { IHeader, IHeaderModalProps } from "../interfaces/header.interface";
 import HeaderSideBar from "./mobile/HeaderSideBar";
 
 const Button: LazyExoticComponent<FC<IButtonProps>> = lazy(
-  () => import("src/shared/Button/Button")
+  () => import("src/shared/Button/Button"),
 );
 
 const Header: FC<IHeader> = ({ navClass }): ReactElement => {
@@ -98,7 +98,7 @@ const Header: FC<IHeader> = ({ navClass }): ReactElement => {
                   to="/"
                   className="relative z-10 cursor-pointer text-3xl font-semibold text-white"
                 >
-                  Jobber
+                  MicroGrade
                 </Link>
                 <div className="peer-checked:hamburger relative z-20 -mr-6 block cursor-pointer p-6 lg:hidden">
                   <Button
@@ -127,13 +127,13 @@ const Header: FC<IHeader> = ({ navClass }): ReactElement => {
                             register: true,
                           }));
                           saveToLocalStorage(
-                            "becomeASeller",
-                            JSON.stringify(true)
+                            "becomeAInstructor",
+                            JSON.stringify(true),
                           );
                         }}
                         className="hover:text-primary dark:hover:text-primaryLight block transition md:px-4"
                       >
-                        <span>Become a Seller</span>
+                        <span>Become an instructor</span>
                       </div>
                     </li>
                   </ul>

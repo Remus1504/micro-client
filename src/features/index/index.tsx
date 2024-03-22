@@ -11,12 +11,12 @@ import CircularPageLoader from "src/shared/page-loader/CirclePageLoader";
 import { saveToSessionStorage } from "src/shared/utils/utils";
 
 import Categories from "./Categories";
-import CourseTabs from "./courses-tabs/CourseIndexItem";
 import Hero from "./Hero";
 import HowItWorks from "./HowItWorks";
+import CourseTabs from "./courses-tabs/CoursesTabs";
 
 const IndexHeader: LazyExoticComponent<FC<IHeader>> = lazy(
-  () => import("src/shared/header/components/Header")
+  () => import("src/shared/header/components/Header"),
 );
 
 const Index: FC = (): ReactElement => {

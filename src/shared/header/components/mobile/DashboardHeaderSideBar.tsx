@@ -59,10 +59,10 @@ const DashboardHeaderSideBar: FC<IHeaderSideBarProps> = ({
           >
             <Link
               to={`/${lowerCase(
-                `${instructor?.username}`
-              )}/${instructor?._id}/seller_dashboard`}
+                `${instructor?.username}`,
+              )}/${instructor?._id}/instructor_dashboard`}
             >
-              Seller Dashboard
+              Instructor Dashboard
             </Link>
           </div>
           <div
@@ -76,7 +76,7 @@ const DashboardHeaderSideBar: FC<IHeaderSideBarProps> = ({
           >
             <Link
               to={`/${lowerCase(
-                `${instructor?.username}`
+                `${instructor?.username}`,
               )}/${instructor?._id}/manage_orders`}
             >
               Orders
@@ -93,7 +93,7 @@ const DashboardHeaderSideBar: FC<IHeaderSideBarProps> = ({
           >
             <Link
               to={`/${lowerCase(
-                `${instructor?.username}`
+                `${instructor?.username}`,
               )}/${instructor?._id}/manage_earnings`}
             >
               Earnings
@@ -110,7 +110,7 @@ const DashboardHeaderSideBar: FC<IHeaderSideBarProps> = ({
             }}
             className="cursor-pointer text-base font-medium text-gray-400"
           >
-            <Link to="/">Switch to Buying</Link>
+            <Link to="/">Switch to Student</Link>
           </div>
           <div
             onClick={(event: MouseEvent) => {

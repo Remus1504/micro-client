@@ -1,16 +1,16 @@
 import { findIndex } from "lodash";
 import { FC, ReactElement, useEffect, useMemo, useState } from "react";
 import { useOutletContext } from "react-router-dom";
-import { IOrderDocument } from "src/features/enrolment/interfaces/enrolment.interface";
+import { IEnrolmentDocument } from "src/features/enrolment/interfaces/enrolment.interface";
 import {
-  orderTypes,
-  sellerOrderList,
+  enrolmentTypes,
+  instructorOrderList,
   shortenLargeNumbers,
 } from "src/shared/utils/utils";
 import { socket } from "src/sockets/socket.service";
 
 import { InstructorContextType } from "../../interfaces/instructor.interface";
-import ManageOrdersTable from "./components/ManageOrdersTable";
+import ManageEnrolmentsTable from "./components/ManageEnrolmentsTable";
 
 const INSTRUCTOR_COURSE_STATUS = {
   ACTIVE: "active",
@@ -20,25 +20,28 @@ const INSTRUCTOR_COURSE_STATUS = {
   ENROLED: "delivered",
 };
 
-const ManageOrders: FC = (): ReactElement => {
+const ManageEnrolments: FC = (): ReactElement => {
   const [type, setType] = useState<string>(INSTRUCTOR_COURSE_STATUS.ACTIVE);
-  const { orders } = useOutletContext<InstructorContextType>();
-  const ordersRef = useMemo(() => [...orders], [orders]);
+  const { enrolments } = useOutletContext<InstructorContextType>();
+  const enrolmentsRef = useMemo(() => [...enrolments], [enrolments]);
 
   useEffect(() => {
-    socket.on("order notification", (order: IOrderDocument) => {
-      const index = findIndex(ordersRef, ["orderId", order.orderId]);
+    socket.on("enrolment notification", (enrolment: IEnrolmentDocument) => {
+      const index = findIndex(enrolmentsRef, [
+        "enrolmentId",
+        enrolment.enrolmentId,
+      ]);
       if (index > -1) {
-        ordersRef.splice(index, 1, order);
+        enrolmentsRef.splice(index, 1, enrolment);
       }
     });
-  }, [ordersRef]);
+  }, [enrolmentsRef]);
 
   return (
     <div className="container mx-auto mt-8 px-6 md:px-12 lg:px-6">
       <div className="flex flex-col flex-wrap">
         <div className="mb-8 px-4 text-xl font-semibold text-black md:px-0 md:text-2xl lg:text-4xl">
-          Manage Orders
+          Manage Enrolments
         </div>
         <div className="p-0">
           <ul className="flex w-full cursor-pointer list-none flex-col flex-wrap rounded-[2px] sm:flex-none sm:flex-row">
@@ -55,14 +58,16 @@ const ManageOrders: FC = (): ReactElement => {
                 }`}
               >
                 Active
-                {orderTypes(INSTRUCTOR_COURSE_STATUS.IN_PROGRESS, ordersRef) >
-                  0 && (
+                {enrolmentTypes(
+                  INSTRUCTOR_COURSE_STATUS.IN_PROGRESS,
+                  enrolmentsRef,
+                ) > 0 && (
                   <span className="ml-1 rounded-[5px] bg-sky-500 px-[5px] py-[1px] text-xs font-medium text-white">
                     {shortenLargeNumbers(
-                      orderTypes(
+                      enrolmentTypes(
                         INSTRUCTOR_COURSE_STATUS.IN_PROGRESS,
-                        ordersRef
-                      )
+                        enrolmentsRef,
+                      ),
                     )}
                   </span>
                 )}
@@ -81,11 +86,16 @@ const ManageOrders: FC = (): ReactElement => {
                 }`}
               >
                 Completed
-                {orderTypes(INSTRUCTOR_COURSE_STATUS.COMPLETED, ordersRef) >
-                  0 && (
+                {enrolmentTypes(
+                  INSTRUCTOR_COURSE_STATUS.COMPLETED,
+                  enrolmentsRef,
+                ) > 0 && (
                   <span className="ml-1 rounded-[5px] bg-sky-500 px-[5px] py-[1px] text-xs font-medium text-white">
                     {shortenLargeNumbers(
-                      orderTypes(INSTRUCTOR_COURSE_STATUS.COMPLETED, ordersRef)
+                      enrolmentTypes(
+                        INSTRUCTOR_COURSE_STATUS.COMPLETED,
+                        enrolmentsRef,
+                      ),
                     )}
                   </span>
                 )}
@@ -104,11 +114,16 @@ const ManageOrders: FC = (): ReactElement => {
                 }`}
               >
                 Cancelled
-                {orderTypes(INSTRUCTOR_COURSE_STATUS.CANCELLED, ordersRef) >
-                  0 && (
+                {enrolmentTypes(
+                  INSTRUCTOR_COURSE_STATUS.CANCELLED,
+                  enrolmentsRef,
+                ) > 0 && (
                   <span className="ml-1 rounded-[5px] bg-sky-500 px-[5px] py-[1px] text-xs font-medium text-white">
                     {shortenLargeNumbers(
-                      orderTypes(INSTRUCTOR_COURSE_STATUS.CANCELLED, ordersRef)
+                      enrolmentTypes(
+                        INSTRUCTOR_COURSE_STATUS.CANCELLED,
+                        enrolmentsRef,
+                      ),
                     )}
                   </span>
                 )}
@@ -118,41 +133,41 @@ const ManageOrders: FC = (): ReactElement => {
         </div>
 
         {type === INSTRUCTOR_COURSE_STATUS.ACTIVE && (
-          <ManageOrdersTable
+          <ManageEnrolmentsTable
             type="active"
-            orders={sellerOrderList(
+            enrolments={instructorOrderList(
               INSTRUCTOR_COURSE_STATUS.IN_PROGRESS,
-              ordersRef
+              enrolmentsRef,
             )}
-            orderTypes={orderTypes(
+            enrolmentTypes={enrolmentTypes(
               INSTRUCTOR_COURSE_STATUS.IN_PROGRESS,
-              ordersRef
+              enrolmentsRef,
             )}
           />
         )}
         {type === INSTRUCTOR_COURSE_STATUS.COMPLETED && (
-          <ManageOrdersTable
+          <ManageEnrolmentsTable
             type="completed"
-            orders={sellerOrderList(
+            enrolments={instructorOrderList(
               INSTRUCTOR_COURSE_STATUS.COMPLETED,
-              ordersRef
+              enrolmentsRef,
             )}
-            orderTypes={orderTypes(
+            enrolmentTypes={enrolmentTypes(
               INSTRUCTOR_COURSE_STATUS.COMPLETED,
-              ordersRef
+              enrolmentsRef,
             )}
           />
         )}
         {type === INSTRUCTOR_COURSE_STATUS.CANCELLED && (
-          <ManageOrdersTable
+          <ManageEnrolmentsTable
             type="cancelled"
-            orders={sellerOrderList(
+            enrolments={instructorOrderList(
               INSTRUCTOR_COURSE_STATUS.CANCELLED,
-              ordersRef
+              enrolmentsRef,
             )}
-            orderTypes={orderTypes(
+            enrolmentTypes={enrolmentTypes(
               INSTRUCTOR_COURSE_STATUS.CANCELLED,
-              ordersRef
+              enrolmentsRef,
             )}
           />
         )}
@@ -161,4 +176,4 @@ const ManageOrders: FC = (): ReactElement => {
   );
 };
 
-export default ManageOrders;
+export default ManageEnrolments;

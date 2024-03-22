@@ -21,10 +21,14 @@ import Typed from "typed.js";
 import { v4 as uuidv4 } from "uuid";
 
 const categories: string[] = [
-  "Graphics & Design",
-  "Digital Marketing",
-  "Writing & Translation",
-  "Programming & Tech",
+  "Mathematics",
+  "English",
+  "Computer Science",
+  "Geography",
+  "Chemistry",
+  "Physics",
+  "Music",
+  "Business",
 ];
 
 const Hero: FC = (): ReactElement => {
@@ -42,7 +46,7 @@ const Hero: FC = (): ReactElement => {
 
   useEffect(() => {
     const typed = new Typed(typedElement.current, {
-      strings: [...categories, "Video & Animation"],
+      strings: [...categories, "Biology"],
       startDelay: 300,
       typeSpeed: 120,
       backSpeed: 200,
@@ -61,7 +65,7 @@ const Hero: FC = (): ReactElement => {
           Expert categories: <span ref={typedElement}></span>
         </h3>
         <h1 className="text-center text-4xl font-black text-blue-900 dark:text-white sm:mx-auto sm:w-10/12 sm:text-5xl md:w-10/12 md:text-5xl lg:w-auto lg:text-left xl:text-7xl">
-          Hire expert freelancers <br className="hidden lg:block" />{" "}
+          Hire expert in the field <br className="hidden lg:block" />{" "}
           <span className="relative bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent dark:from-blue-400 dark:to-cyan-300">
             for your project
           </span>
@@ -70,7 +74,7 @@ const Hero: FC = (): ReactElement => {
         <div className="lg:flex">
           <div className="relative mt-8 space-y-8 text-center sm:mx-auto sm:w-10/12 md:mt-16 md:w-2/3 lg:ml-0 lg:mr-auto lg:w-7/12 lg:text-left">
             <p className="text-gray-700 dark:text-gray-300 sm:text-lg lg:w-11/12">
-              Find the right freelance service for your next project.
+              Find the right expert service for your next project.
             </p>
 
             <div className="flex w-full justify-between gap-6 lg:gap-12">
@@ -113,7 +117,7 @@ const Hero: FC = (): ReactElement => {
                     <span className="block truncate font-medium dark:text-white">
                       <a
                         href={`/search/categories/${replaceSpacesWithDash(
-                          category
+                          category,
                         )}`}
                       >
                         {category}

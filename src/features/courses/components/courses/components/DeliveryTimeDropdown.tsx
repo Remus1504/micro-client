@@ -7,13 +7,13 @@ import { saveToLocalStorage } from "src/shared/utils/utils";
 import { v4 as uuidv4 } from "uuid";
 
 const deliveryTime = [
-  { label: "Up to 1 day", value: "1" },
-  { label: "Up to 2 days", value: "2" },
-  { label: "Up to 3 days", value: "3" },
-  { label: "Up to 4 days", value: "4" },
-  { label: "Up to 5 days", value: "5" },
-  { label: "Up to 6 days", value: "6" },
-  { label: "Up to 7 days", value: "7" },
+  { label: "Up to 10 day", value: "1" },
+  { label: "Up to 20 days", value: "2" },
+  { label: "Up to 30 days", value: "3" },
+  { label: "Up to 40 days", value: "4" },
+  { label: "Up to 50 days", value: "5" },
+  { label: "Up to 60 days", value: "6" },
+  { label: "Up to 90 days", value: "7" },
   { label: "Anytime", value: "Anytime" },
 ];
 
@@ -59,7 +59,7 @@ const DurationTimeDropdown: FC = (): ReactElement => {
                         className="dark:focus:ring-blue-sky-500 h-4 w-4 bg-gray-100 text-blue-600 dark:border-gray-500 dark:bg-gray-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700"
                         onChange={(event: ChangeEvent) => {
                           setSelectedTime(
-                            (event.target as HTMLInputElement).value
+                            (event.target as HTMLInputElement).value,
                           );
                         }}
                       />
@@ -117,7 +117,7 @@ const DurationTimeDropdown: FC = (): ReactElement => {
             }
             onClick={() => {
               const updatedSearchParams: URLSearchParams = new URLSearchParams(
-                searchParams.toString()
+                searchParams.toString(),
               );
               updatedSearchParams.delete("delivery_time");
               setSearchParams(updatedSearchParams);

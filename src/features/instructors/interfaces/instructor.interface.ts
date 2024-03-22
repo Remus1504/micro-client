@@ -1,12 +1,12 @@
 import { Dispatch, SetStateAction } from "react";
 import { InstructorCourse } from "src/features/courses/interfaces/course.interface";
-import { IOrderDocument } from "src/features/enrolment/interfaces/enrolment.interface";
+import { IEnrolmentDocument } from "src/features/enrolment/interfaces/enrolment.interface";
 import { IRatingCategories } from "src/features/enrolment/interfaces/review.interface";
 
 export type InstructorContextType = {
   courses: InstructorCourse[];
   pausedCourses: InstructorCourse[];
-  orders: IOrderDocument[];
+  enrolments: IEnrolmentDocument[];
   instructor: InstructorDocument | null;
 };
 

@@ -14,11 +14,11 @@ import { emptyCourseData } from "src/shared/utils/static";
 import { rating, shortenLargeNumbers } from "src/shared/utils/utils";
 import { v4 as uuidv4 } from "uuid";
 
-const GigInfoDisplay: FC = (): ReactElement => {
+const CourseInfoDisplay: FC = (): ReactElement => {
   const [showRegisterModal, setShowRegisterModal] = useState<boolean>(false);
   const { courseId } = useParams<string>();
   const { data, isSuccess, isLoading } = useGetAuthCourseByIdQuery(
-    `${courseId}`
+    `${courseId}`,
   );
   const course = useRef<InstructorCourse>(emptyCourseData);
   if (isSuccess) {
@@ -67,7 +67,7 @@ const GigInfoDisplay: FC = (): ReactElement => {
                         <StarRating
                           value={rating(
                             course.current.ratingSum /
-                              course.current.ratingsCount
+                              course.current.ratingsCount,
                           )}
                           size={14}
                         />
@@ -76,7 +76,7 @@ const GigInfoDisplay: FC = (): ReactElement => {
                         <span className="text-orange-400">
                           {rating(
                             course.current.ratingSum /
-                              course.current.ratingsCount
+                              course.current.ratingsCount,
                           )}
                         </span>
                         <span className="">
@@ -96,7 +96,7 @@ const GigInfoDisplay: FC = (): ReactElement => {
                     {!isLoading && isSuccess && (
                       <img
                         src={course.current.coverImage}
-                        alt="Gig Image"
+                        alt="Course Image"
                         className="object-contains h-full w-full transition-all duration-500 hover:scale-105"
                       />
                     )}
@@ -111,7 +111,7 @@ const GigInfoDisplay: FC = (): ReactElement => {
                     )}
                   </div>
                   <div className="mt-10 pb-6 text-lg font-semibold">
-                    About This Gig
+                    About This Course
                   </div>
                   <div className="pb-6">
                     <HtmlParser input={course.current.description ?? ""} />
@@ -139,7 +139,7 @@ const GigInfoDisplay: FC = (): ReactElement => {
                                   ? ","
                                   : ""
                               }`}</span>
-                            )
+                            ),
                           )}
                       </div>
                     </div>
@@ -205,4 +205,4 @@ const GigInfoDisplay: FC = (): ReactElement => {
   );
 };
 
-export default GigInfoDisplay;
+export default CourseInfoDisplay;

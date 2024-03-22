@@ -1,27 +1,27 @@
-import { IResponse } from "src/shared/shared.interface";
-import { api } from "src/store/apis";
+import { IResponse } from 'src/shared/shared.interface';
+import { api } from 'src/store/apis';
 
-import { IReviewDocument } from "../interfaces/review.interface";
+import { IReviewDocument } from '../interfaces/review.interface';
 
 export const reviewApi = api.injectEndpoints({
   endpoints: (build) => ({
     getReviewsByCourseId: build.query<IResponse, string>({
-      query: (courseId: string) => `review/gig/${courseId}`,
-      providesTags: ["Review"],
+      query: (courseId: string) => `review/course/${courseId}`,
+      providesTags: ['Review'],
     }),
     getReviewsByInstructorId: build.query<IResponse, string>({
       query: (instructorId: string) => `review/instructor/${instructorId}`,
-      providesTags: ["Review"],
+      providesTags: ['Review'],
     }),
     addReview: build.mutation<IResponse, { body: IReviewDocument }>({
       query({ body }) {
         return {
-          url: "review",
-          method: "POST",
+          url: 'review',
+          method: 'POST',
           body,
         };
       },
-      invalidatesTags: ["Review"],
+      invalidatesTags: ['Review'],
     }),
   }),
 });

@@ -71,7 +71,7 @@ const ProfileHeader: FC<IProfileHeaderProps> = ({
           <div className="flex h-20 w-20 justify-center self-center md:h-24 md:w-24 lg:h-36 lg:w-36">
             <LazyLoadImage
               src={instructorProfile?.profilePicture}
-              alt="Gig Image"
+              alt="Course Image"
               className="w-full h-full rounded-full object-cover"
               placeholderSrc="https://placehold.co/330x220?text=Profile+Image"
               effect="blur"
@@ -213,7 +213,7 @@ const ProfileHeader: FC<IProfileHeaderProps> = ({
                   <StarRating
                     value={rating(
                       instructorProfile?.ratingSum /
-                        instructorProfile.ratingsCount
+                        instructorProfile.ratingsCount,
                     )}
                     size={14}
                   />
@@ -228,7 +228,7 @@ const ProfileHeader: FC<IProfileHeaderProps> = ({
                   <span className="font-bold text-white">
                     {rating(
                       instructorProfile?.ratingSum /
-                        instructorProfile.ratingsCount
+                        instructorProfile.ratingsCount,
                     )}
                   </span>
                 </div>

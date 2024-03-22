@@ -4,19 +4,19 @@ import {
   FetchArgs,
   fetchBaseQuery,
   FetchBaseQueryError,
-} from "@reduxjs/toolkit/query/react";
-import { getDataFromSessionStorage } from "src/shared/utils/utils";
+} from '@reduxjs/toolkit/query/react';
+import { getDataFromSessionStorage } from 'src/shared/utils/utils';
 
 const BASE_ENDPOINT = import.meta.env.VITE_BASE_ENDPOINT;
 
 const baseQuery = fetchBaseQuery({
   baseUrl: `${BASE_ENDPOINT}/api/gateway/v1`,
   prepareHeaders: (headers) => {
-    headers.set("Content-Type", "application/json");
-    headers.set("Accept", "application/json");
+    headers.set('Content-Type', 'application/json');
+    headers.set('Accept', 'application/json');
     return headers;
   },
-  credentials: "include",
+  credentials: 'include',
 });
 
 const baseQueryWithReAuth: BaseQueryFn<
@@ -26,31 +26,31 @@ const baseQueryWithReAuth: BaseQueryFn<
 > = async (args, api, extraOptions) => {
   const result = await baseQuery(args, api, extraOptions);
   if (result.error && result.error.status === 401) {
-    const loggedInUsername: string = getDataFromSessionStorage("loggedInuser");
+    const loggedInUsername: string = getDataFromSessionStorage('loggedInuser');
     await baseQuery(
       `/auth/refresh-token/${loggedInUsername}`,
       api,
-      extraOptions
+      extraOptions,
     );
   }
   return result;
 };
 
 export const api = createApi({
-  reducerPath: "clientApi",
+  reducerPath: 'clientApi',
   baseQuery: baseQueryWithReAuth,
   tagTypes: [
-    "Auth",
-    "Currentuser",
-    "Student",
-    "Instructor",
-    "Chat",
-    "Checkout",
-    "Courses",
-    "Search",
-    "Review",
-    "Enrolment",
-    "Notification",
+    'Auth',
+    'Currentuser',
+    'Student',
+    'Instructor',
+    'Chat',
+    'Checkout',
+    'Courses',
+    'Search',
+    'Review',
+    'Enrolment',
+    'Notification',
   ],
   endpoints: () => ({}),
 });

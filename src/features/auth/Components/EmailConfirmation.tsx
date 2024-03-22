@@ -18,7 +18,7 @@ const ConfirmEmail: FC = (): ReactElement => {
   const onVerifyEmail = useCallback(async (): Promise<void> => {
     try {
       const result: IResponse = await verifyEmail(
-        `${searchParams.get("v_token")}`
+        `${searchParams.get("v_token")}`,
       ).unwrap();
       setAlertMessage("Email verified successfully.");
       setStatus(AUTH_FETCH_STATUS.SUCCESS);

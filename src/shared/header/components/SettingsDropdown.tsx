@@ -36,27 +36,29 @@ const SettingsDropdown: FC<IHomeHeaderProps> = ({
               to={`${
                 type === "student"
                   ? `/${lowerCase(
-                      `${authUser?.username}`
-                    )}/${instructor?._id}/seller_dashboard`
+                      `${authUser?.username}`,
+                    )}/${instructor?._id}/instructor_dashboard`
                   : "/"
               }`}
               onClick={() => {
                 if (setIsDropdownOpen) {
                   setIsDropdownOpen(false);
                 }
-                dispatch(updateHeader("sellerDashboard"));
+                dispatch(updateHeader("instructorDashboard"));
                 dispatch(updateCategoryContainer(true));
               }}
               className="block w-full cursor-pointer rounded bg-sky-500 px-4s py-2 text-center font-bold text-white hover:bg-sky-400 focus:outline-none"
             >
-              {type === "student" ? "Switch to Selling" : "Switch to Buying"}
+              {type === "student"
+                ? "Switch to Instructing"
+                : "Switch to Student"}
             </Link>
           </li>
         )}
         {student && student.isInstructor && type === "student" && (
           <li>
             <Link
-              to={`/manage_gigs/new/${instructor?._id}`}
+              to={`/manage_courses/new/${instructor?._id}`}
               className="block px-4 py-2 hover:text-sky-400"
               onClick={() => {
                 if (setIsDropdownOpen) {
@@ -66,14 +68,14 @@ const SettingsDropdown: FC<IHomeHeaderProps> = ({
                 dispatch(updateCategoryContainer(true));
               }}
             >
-              Add a new gig
+              Add a new course
             </Link>
           </li>
         )}
         {type === "student" && (
           <li>
             <Link
-              to={`/users/${student?.username}/${student?._id}/orders`}
+              to={`/users/${student?.username}/${student?._id}/enrolments`}
               className="block px-4 py-2 hover:text-sky-400"
               onClick={() => {
                 if (setIsDropdownOpen) {
@@ -90,8 +92,8 @@ const SettingsDropdown: FC<IHomeHeaderProps> = ({
         {student && student.isInstructor && type === "student" && (
           <li>
             <Link
-              to={`/seller_profile/${lowerCase(
-                `${instructor?.username}`
+              to={`/instructor_profile/${lowerCase(
+                `${instructor?.username}`,
               )}/${instructor?._id}/edit`}
               className="block px-4 py-2 hover:text-sky-400"
               onClick={() => {
@@ -108,7 +110,7 @@ const SettingsDropdown: FC<IHomeHeaderProps> = ({
         )}
         <li>
           <Link
-            to={`${lowerCase(`${student?.username}/edit`)}`}
+            to={`/${lowerCase(`${student?.username}/edit`)}`}
             className="block px-4 py-2 hover:text-sky-400"
             onClick={() => {
               if (setIsDropdownOpen) {

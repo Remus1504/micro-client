@@ -7,20 +7,22 @@ import { InstructorCourse } from "src/features/courses/interfaces/course.interfa
 import { IResponse } from "src/shared/shared.interface";
 import { saveToLocalStorage, showErrorToast } from "src/shared/utils/utils";
 
-import { IOffer } from "../interfaces/enrolment.interface";
+import { IEnrolment } from "../interfaces/enrolment.interface";
 import { useCreateOrderIntentMutation } from "../services/enrolment.service";
 import CheckoutForm from "./checkout-form/CheckoutForm";
 
 const Checkout: FC = (): ReactElement => {
   const stripePromise = useMemo(
     () => loadStripe(import.meta.env.VITE_STRIPE_KEY),
-    []
+    [],
   );
   const [clientSecret, setClientSecret] = useState<string>("");
   const { courseId } = useParams<string>();
   const [searchParams] = useSearchParams({});
   const { state }: { state: InstructorCourse } = useLocation();
-  const [offer] = useState<IOffer>(JSON.parse(`${searchParams.get("offer")}`));
+  const [offer] = useState<IEnrolment>(
+    JSON.parse(`${searchParams.get("offer")}`),
+  );
   const serviceFee: number =
     offer.price < 50
       ? (5.5 / 100) * offer.price + 2
@@ -33,7 +35,7 @@ const Checkout: FC = (): ReactElement => {
       setClientSecret(`${response.clientSecret}`);
       saveToLocalStorage(
         "paymentIntentId",
-        JSON.stringify(`${response.paymentIntentId}`)
+        JSON.stringify(`${response.paymentIntentId}`),
       );
     } catch (error) {
       showErrorToast("Error with checkout.");
@@ -74,7 +76,7 @@ const Checkout: FC = (): ReactElement => {
               <img
                 className="object-cover w-20 h-11"
                 src={state.coverImage}
-                alt="Gig Cover Image"
+                alt="Course Cover Image"
               />
               <h4 className="font-bold text-sm text-[#161c2d] mt-2 md:pl-4 md:mt-0">
                 {state.title}
@@ -86,7 +88,7 @@ const Checkout: FC = (): ReactElement => {
               </li>
               <li className="flex justify-between px-4 pt-2 pb-2">
                 <div className="text-sm font-normal flex gap-2">
-                  <FaRegClock className="self-center" /> Expected delivery time
+                  <FaRegClock className="self-center" /> Expected start date
                 </div>
                 <span className="text-sm">
                   {offer.durationInDays} day

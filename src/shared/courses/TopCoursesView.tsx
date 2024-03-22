@@ -10,7 +10,7 @@ import { socket } from "src/sockets/socket.service";
 import { v4 as uuidv4 } from "uuid";
 
 import { replaceSpacesWithDash } from "../utils/utils";
-import GigCardDisplayItem from "./CourseCardDisplayItem";
+import CourseCardDisplayItem from "./CourseCardDisplayItem";
 
 interface IScrollProps {
   start: boolean;
@@ -103,7 +103,7 @@ const TopCoursesView: FC<ICourseTopProps> = ({
           {courses.map((course: InstructorCourse) => (
             <div key={uuidv4()} className={`${width}`}>
               {type === "home" ? (
-                <GigCardDisplayItem
+                <CourseCardDisplayItem
                   course={course}
                   linkTarget={false}
                   showEditIcon={false}

@@ -62,11 +62,11 @@ const DashboardHeader: FC = (): ReactElement => {
                   <div className="w-full gap-x-4 md:flex">
                     <Link
                       to={`/${lowerCase(
-                        `${instructor?.username}`
-                      )}/${instructor?._id}/seller_dashboard`}
+                        `${instructor?.username}`,
+                      )}/${instructor?._id}/instructor_dashboard`}
                       className="relative z-10 flex cursor-pointer justify-center self-center text-2xl font-semibold text-black lg:text-3xl"
                     >
-                      Jobber
+                      Microrgade
                     </Link>
                   </div>
                 </div>
@@ -77,17 +77,17 @@ const DashboardHeader: FC = (): ReactElement => {
                     <li className="relative flex items-center">
                       <Link
                         to={`/${lowerCase(
-                          `${instructor?.username}`
+                          `${instructor?.username}`,
                         )}/${instructor?._id}/manage_orders`}
                         className="px-3"
                       >
-                        <span>Orders</span>
+                        <span>Enrolments</span>
                       </Link>
                     </li>
                     <li className="relative flex items-center">
                       <Link
                         to={`/${lowerCase(
-                          `${instructor?.username}`
+                          `${instructor?.username}`,
                         )}/${instructor?._id}/manage_earnings`}
                         className="px-3"
                       >

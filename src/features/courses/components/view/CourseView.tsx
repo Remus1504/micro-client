@@ -16,8 +16,8 @@ import {
   useGetCourseByIdQuery,
   useGetMoreCoursesLikeThisQuery,
 } from "../../services/course.service";
-import GigViewLeft from "./components/CourseViewLeft";
-import GigViewRight from "./components/CourseViewRight";
+import CourseViewLeft from "./components/CourseViewLeft";
+import CourseViewRight from "./components/CourseViewRight";
 
 const CourseView: FC = (): ReactElement => {
   const { courseId, instructorId } = useParams<string>();
@@ -84,7 +84,8 @@ const CourseView: FC = (): ReactElement => {
                     <div className="mt-1 w-20 gap-x-2">
                       <StarRating
                         value={rating(
-                          course.current.ratingSum / course.current.ratingsCount
+                          course.current.ratingSum /
+                            course.current.ratingsCount,
                         )}
                         size={14}
                       />
@@ -92,7 +93,8 @@ const CourseView: FC = (): ReactElement => {
                     <div className="ml-2 mt-[1px] flex gap-1 text-sm">
                       <span className="text-orange-400">
                         {rating(
-                          course.current.ratingSum / course.current.ratingsCount
+                          course.current.ratingSum /
+                            course.current.ratingsCount,
                         )}
                       </span>
                       <span className="">
@@ -117,12 +119,12 @@ const CourseView: FC = (): ReactElement => {
           >
             <div className="flex flex-wrap">
               <div className="order-last w-full p-4 lg:order-first lg:w-2/3">
-                <GigViewLeft />
+                <CourseViewLeft />
               </div>
 
               <div className="w-full p-4 lg:w-1/3 ">
                 <StickyBox offsetTop={10} offsetBottom={10}>
-                  <GigViewRight />
+                  <CourseViewRight />
                 </StickyBox>
               </div>
             </div>
