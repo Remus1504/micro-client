@@ -23,7 +23,10 @@ const INSTRUCTOR_COURSE_STATUS = {
 const ManageEnrolments: FC = (): ReactElement => {
   const [type, setType] = useState<string>(INSTRUCTOR_COURSE_STATUS.ACTIVE);
   const { enrolments } = useOutletContext<InstructorContextType>();
-  const enrolmentsRef = useMemo(() => [...enrolments], [enrolments]);
+  const enrolmentsRef = useMemo(
+    () => (Array.isArray(enrolments) ? [...enrolments] : []),
+    [enrolments],
+  );
 
   useEffect(() => {
     socket.on("enrolment notification", (enrolment: IEnrolmentDocument) => {

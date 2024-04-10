@@ -34,6 +34,7 @@ const Enrolment: FC = (): ReactElement => {
   useEffect(() => {
     socketService.setupSocketConnection();
     if (isSuccess) {
+      console.log("Data from API:", data.enrolment);
       setOrder({ ...data.enrolment } as IEnrolmentDocument);
     }
   }, [data?.enrolment, isSuccess]);
@@ -45,6 +46,7 @@ const Enrolment: FC = (): ReactElement => {
       }
     });
   }, [enrolmentId]);
+  console.log("Show Delivery Panel state:", showDeliveryPanel);
 
   return (
     <div className="container mx-auto">
@@ -83,7 +85,7 @@ const Enrolment: FC = (): ReactElement => {
                   enrolment.studentUsername === authUser.username && (
                     <Button
                       className="rounded bg-sky-500 px-2 py-2 text-center text-sm font-bold text-white hover:bg-sky-400 focus:outline-none md:px-4 md:py-2 md:text-base"
-                      label="View Delivery"
+                      label="View Enrolment"
                       onClick={() => {
                         if (elementRef.current) {
                           elementRef.current.scrollIntoView({

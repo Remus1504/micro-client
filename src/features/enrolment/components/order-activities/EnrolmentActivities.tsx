@@ -17,9 +17,10 @@ import {
   IEnrolmentActivitiesProps,
 } from "../../interfaces/enrolment.interface";
 import EnrolmentDelivered from "./components/EnrolmentDelivered";
-import EnrolmentExtension from "./components/EnrolmentExtension";
+
 import EnrolmentPlaced from "./components/EnrolmentPlaced";
 import EnrolmentReview from "./components/EnrolmentReview";
+import EnrolmentExtension from "./components/EnrolmentExtension";
 
 const EnrolmentActivities: ForwardRefExoticComponent<
   Omit<IEnrolmentActivitiesProps, "ref"> & RefAttributes<HTMLDivElement>

@@ -111,7 +111,7 @@ export interface IEnrolmentEvents {
   requirements: string;
   enrolmentStarted: string;
   startDateUpdate?: string;
-  sucessfulEnrolment?: string;
+  enrolmentDelivered?: string;
   studentReview?: string;
   instructorReview?: string;
 }
@@ -163,7 +163,7 @@ export interface IEnrolmentMessage {
   onGoingTasks?: number;
   completedTasks?: number;
   totalEarnings?: number;
-  enrolledCourses?: string;
+  purchasedCourses?: string;
   recentDelivery?: string;
   type?: string;
   receiverEmail?: string;

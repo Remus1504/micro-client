@@ -18,8 +18,9 @@ const SkillField: FC<ISkillEditProps> = ({
   const onHandleUpdate = (): void => {
     if (type === "add") {
       const clonedSkills: string[] = cloneDeep(
-        instructorProfile?.skills
+        instructorProfile?.skills,
       ) as string[];
+      console.log(instructorProfile.skills);
       clonedSkills.push(skill);
       if (setInstructorProfile && setShowSkillAddForm) {
         setInstructorProfile({ ...instructorProfile, skills: clonedSkills });
@@ -28,15 +29,15 @@ const SkillField: FC<ISkillEditProps> = ({
     } else {
       const itemIndex: number = findIndex(
         instructorProfile.skills,
-        (value: string) => value === selectedSkill
+        (value: string) => value === selectedSkill,
       );
       const clonedSkills: string[] = cloneDeep(
-        instructorProfile?.skills
+        instructorProfile?.skills,
       ) as string[];
       clonedSkills.splice(itemIndex, 1, skill);
       const filtered: string[] = filter(
         clonedSkills,
-        (item: string) => item !== ""
+        (item: string) => item !== "",
       );
       if (setInstructorProfile && setShowSkillEditForm) {
         setInstructorProfile({ ...instructorProfile, skills: filtered });

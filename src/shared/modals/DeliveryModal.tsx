@@ -34,6 +34,7 @@ const DeliverWorkModal: FC<IModalProps> = ({
 
   const deliverWork = async (): Promise<void> => {
     try {
+      console.log("Deliver button clicked");
       const selectedWorkFile = selectedFile as File;
       const dataImage: string | ArrayBuffer | null =
         await readAsBase64(selectedWorkFile);
@@ -44,16 +45,26 @@ const DeliverWorkModal: FC<IModalProps> = ({
         fileSize: selectedWorkFile.size,
         fileName: selectedWorkFile.name,
       };
+      console.log("Sending enrolment data:", completedWork);
+
+      const response = await deliverOrder({
+        enrolmentId: `${enrolment?.enrolmentId}`,
+        body: completedWork,
+      });
+      console.log("Mutation response:", response);
+      // Log the response
+
       await deliverOrder({
         enrolmentId: `${enrolment?.enrolmentId}`,
         body: completedWork,
       });
-      showSuccessToast("Order delivered successfully.");
+      showSuccessToast("Enrolment successful.");
       if (onClose) {
         onClose();
       }
     } catch (error) {
-      showErrorToast("Error deliverying enrolment.");
+      console.error("Delivery error:", error);
+      showErrorToast("Error starting enrolment.");
     }
   };
 
@@ -75,14 +86,16 @@ const DeliverWorkModal: FC<IModalProps> = ({
         <div className="">
           <div className="relative bottom-auto left-auto right-auto top-auto max-h-[90vh] min-w-[500px] bg-white p-4">
             <div className="mb-5 w-full text-left">
-              <h4 className="text-base font-bold">Deliver your work</h4>
+              <h4 className="text-base font-bold">
+                Enrol student and send work
+              </h4>
               <p>Images, Pdfs, Videos or Zip: Max. 1GB</p>
             </div>
             <div>
               <TextAreaInput
                 className="w-full rounded-t-lg border border-[#f1f1f1] p-2.5 text-sm font-normal text-gray-600 focus:outline-none"
                 name="description"
-                placeholder="Add a response to buyer..."
+                placeholder="Add a response to student..."
                 value={description}
                 rows={4}
                 onChange={(event: ChangeEvent) =>

@@ -10,10 +10,6 @@ import { TimeAgo } from "src/shared/utils/time.utils";
 
 const EnrolmentPlaced: FC = (): ReactElement => {
   const { enrolment, authUser } = useContext(EnrolmentContext);
-  console.log("placeOrder:", enrolment?.events.placeOrder);
-  console.log("requirements:", enrolment?.events.requirements);
-  console.log("enrolmentStarted:", enrolment?.events.enrolmentStarted);
-  console.log("newStartDate:", enrolment?.offer.newStartDate);
 
   const placeOrderDate = enrolment?.events.placeOrder
     ? TimeAgo.dayWithTime(`${enrolment?.events.placeOrder}`)
@@ -91,7 +87,7 @@ const EnrolmentPlaced: FC = (): ReactElement => {
                 {enrolment?.studentUsername === authUser?.username
                   ? "Your"
                   : "The"}{" "}
-                enrolment started
+                enrolment placed at
               </span>
               <p className="text-sm font-normal italic">
                 {enrolmentStartedDate}

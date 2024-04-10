@@ -64,6 +64,13 @@ const EnrolmentDelivered: ForwardRefExoticComponent<
     _id: `${enrolment?.studentId}`,
     profilePicture: `${enrolment?.studentImage}`,
   };
+  console.log("enrolment:", enrolment);
+  console.log("authUser:", authUser);
+  console.log("viewDeliveryBtnClicked:", viewDeliveryBtnClicked);
+  console.log(
+    "Successful enrolment event time:",
+    enrolment?.events.enrolmentDelivered,
+  );
 
   const onDeliveryApprovalHandler = async (): Promise<void> => {
     try {
@@ -75,7 +82,7 @@ const EnrolmentDelivered: ForwardRefExoticComponent<
         // instructor will receiver 80% of original price
         // 20% goes to the platform
         totalEarnings: 0.8 * parseInt(`${enrolment?.price}`),
-        enrolledCourses: `${enrolment?.courseId}`,
+        purchasedCourses: `${enrolment?.courseId}`,
       };
       await approveOrder({
         enrolmentId: `${enrolment?.enrolmentId}`,
@@ -144,7 +151,7 @@ const EnrolmentDelivered: ForwardRefExoticComponent<
                       </span>
                       <p className="flex self-center text-sm font-normal italic">
                         {TimeAgo.dayWithTime(
-                          `${enrolment?.events.sucessfulEnrolment}`,
+                          `${enrolment?.events.enrolmentDelivered}`,
                         )}
                       </p>
                     </div>

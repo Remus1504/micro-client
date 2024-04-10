@@ -24,6 +24,7 @@ const ExtendDateModal: FC<IExtendedDateModalProps> = ({
   const [requestDeliveryDateExtension] = useRequestStartDateExtensionMutation();
 
   const requestExtension = async (): Promise<void> => {
+    // Confirming button click event
     try {
       const extended: IExtendedEnrolment = {
         originalDate: enrolment.offer.oldStartDate,
@@ -31,16 +32,25 @@ const ExtendDateModal: FC<IExtendedDateModalProps> = ({
         days: parseInt(selectedDay),
         reason,
       };
-      await requestDeliveryDateExtension({
+
+      // Log the data you're sending
+      console.log("Request data1:", extended);
+
+      const response = await requestDeliveryDateExtension({
         enrolmentId: enrolment.enrolmentId,
         body: extended,
       }).unwrap();
+
+      // Log the response data
+      console.log("Request response equals:", response);
+
       onClose();
     } catch (error) {
+      // Log any errors that occur during the request
+      console.error("Error sending request:", error);
       showErrorToast("Error sending request");
     }
   };
-
   return (
     <ModalBg>
       <div className="fixed bottom-0 left-0 right-0 top-0 z-[30] flex w-full items-center justify-center">

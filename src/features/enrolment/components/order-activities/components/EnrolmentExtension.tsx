@@ -21,6 +21,42 @@ const EnrolmentExtension: FC = (): ReactElement => {
     useState<boolean>(false);
   const [updateDeliveryDate] = useUpdateStartDateMutation();
 
+  // console.log("Enrolment object:", enrolment);
+
+  // Check if enrolment object exists
+  // if (enrolment) {
+  //   // Check if requestExtension exists
+  //   if (enrolment.requestExtension) {
+  //     console.log("Request extension:", enrolment.requestExtension);
+
+  //     // Check if newDate exists
+  //     if (enrolment.requestExtension.newDate) {
+  //       console.log("New date:", enrolment.requestExtension.newDate);
+  //     } else {
+  //       console.log("New date is missing.");
+  //     }
+  //   } else {
+  //     console.log("Request extension is missing.");
+  //   }
+
+  //   // Check if offer exists
+  //   if (enrolment.offer) {
+  //     console.log("Offer:", enrolment.offer);
+
+  //     // Check if oldStartDate and newStartDate exist
+  //     if (enrolment.offer.oldStartDate && enrolment.offer.newStartDate) {
+  //       console.log("Old start date:", enrolment.offer.oldStartDate);
+  //       console.log("New start date:", enrolment.offer.newStartDate);
+  //     } else {
+  //       console.log("Old or new start date is missing.");
+  //     }
+  //   } else {
+  //     console.log("Offer is missing.");
+  //   }
+  // } else {
+  //   console.log("Enrolment object is missing.");
+  // }
+
   const onApproveHandler = async (): Promise<void> => {
     try {
       const extended: IExtendedEnrolment = {
