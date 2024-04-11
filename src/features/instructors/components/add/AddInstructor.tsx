@@ -146,6 +146,7 @@ const AddInstructor: FC = (): ReactElement => {
           await createInstructor(instructorData).unwrap();
         dispatch(addInstructor(response.instructor));
         dispatch(addStudent(updateStudent));
+        console.log(response);
         navigate(
           `/instructor_profile/${lowerCase(`${authUser.username}`)}/${
             response.instructor?._id

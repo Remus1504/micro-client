@@ -101,6 +101,7 @@ const EnrolmentDelivered: ForwardRefExoticComponent<
   const downloadOrderFile = async (url: string, fileName: string) => {
     try {
       const response: AxiosResponse = await getFileBlob(url);
+      console.log(response);
       const blobUrl = URL.createObjectURL(new Blob([response.data]));
       downloadFile(blobUrl, fileName);
     } catch (error) {
